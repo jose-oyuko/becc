@@ -38,12 +38,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # custom app
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +136,34 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "BECC Admin",
+    "site_header": "Brightstar Environmental Conservation Centre",
+    "site_brand": "BECC",
+    "welcome_sign": "Welcome to BECC Management Panel",
+    "copyright": "Brightstar Environmental Conservation Centre © 2025",
+
+    "order_with_respect_to": ["core"],
+
+    "models": {
+        "core.Project": {"icon": "fa fa-leaf"},
+        "core.Pillar": {"icon": "fa fa-tree"},
+        "core.Event": {"icon": "fa fa-calendar"},
+        "core.Partner": {"icon": "fa fa-handshake"},
+        "core.TeamMember": {"icon": "fa fa-users"},
+        "core.BlogPost": {"icon": "fa fa-newspaper"},
+        "core.Donation": {"icon": "fa fa-money-bill"},
+        "core.VolunteerApplication": {"icon": "fa fa-user-check"},
+    },
+}
+
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",           # (Bootstrap theme)
+    "dark_mode_theme": "cyborg",
+    "navbar": "navbar-dark navbar-primary",
+    "footer_fixed": True,
+    "body_small_text": False,
+}
