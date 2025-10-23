@@ -19,6 +19,11 @@ urlpatterns = [
     path('dashboard/events/add/', views.event_create, name='event_create'),
     path('dashboard/events/edit/<int:pk>/', views.event_update, name='event_update'),
     path('dashboard/events/delete/<int:pk>/', views.event_delete, name='event_delete'),
+    # Partners CRUD
+    path('dashboard/partners/', views.partner_list, name='partner_list'),
+    path('dashboard/partners/add/', views.partner_create, name='partner_create'),
+    path('dashboard/partners/edit/<int:pk>/', views.partner_update, name='partner_update'),
+    path('dashboard/partners/delete/<int:pk>/', views.partner_delete, name='partner_delete'),
 
 
 ]

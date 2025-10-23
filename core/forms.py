@@ -1,5 +1,18 @@
 from django import forms
-from .models import Project, Pillar, Event
+from .models import Project, Pillar, Event, Partner
+
+class PartnerForm(forms.ModelForm):
+    class Meta:
+        model = Partner
+        fields = ['name', 'partner_type', 'description', 'website', 'logo']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'partner_type': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 3}),
+            'website': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+        }
+
 
 class ProjectForm(forms.ModelForm):
     class Meta:

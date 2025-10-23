@@ -3,8 +3,75 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar
 from django.db import models
 from django.contrib import messages
-from .forms import ProjectForm, PillarForm, EventForm
+from .forms import ProjectForm, PillarForm, EventForm, PartnerForm
 from django.urls import reverse
+
+
+@login_required
+def partner_list(request):
+    partners = Partner.objects.all()
+    context = {
+        "title": "Partners",
+        "single_name": "Partner",
+        "plural_name": "Partners",
+        "headers": ["Name", "Type", "Website"],
+        "fields": ["name", "partner_type", "website"],
+        "objects": partners,
+        "add_url": reverse("partner_create"),
+        "edit_base_url": reverse("partner_update", args=[0]).replace("0/", ""),
+        "delete_base_url": reverse("partner_delete", args=[0]).replace("0/", ""),
+    }
+    return render(request, "core/crud_list_base.html", context)
+
+
+@login_required
+def partner_create(request):
+    if request.method == 'POST':
+        form = PartnerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Partner added successfully!")
+            return redirect('partner_list')
+    else:
+        form = PartnerForm()
+    return render(request, 'core/crud_form_base.html', {
+        'title': 'Add Partner',
+        'form': form,
+        'back_url': reverse('partner_list'),
+    })
+
+
+@login_required
+def partner_update(request, pk):
+    partner = get_object_or_404(Partner, pk=pk)
+    if request.method == 'POST':
+        form = PartnerForm(request.POST, request.FILES, instance=partner)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Partner updated successfully!")
+            return redirect('partner_list')
+    else:
+        form = PartnerForm(instance=partner)
+    return render(request, 'core/crud_form_base.html', {
+        'title': 'Edit Partner',
+        'form': form,
+        'back_url': reverse('partner_list'),
+    })
+
+
+@login_required
+def partner_delete(request, pk):
+    partner = get_object_or_404(Partner, pk=pk)
+    if request.method == 'POST':
+        partner.delete()
+        messages.success(request, "Partner deleted successfully!")
+        return redirect('partner_list')
+    return render(request, 'core/crud_confirm_delete.html', {
+        'object': partner,
+        'single_name': 'Partner',
+        'back_url': reverse('partner_list'),
+    })
+
 
 @login_required
 def event_list(request):
