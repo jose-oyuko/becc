@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}BECC Dashboard{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 flex h-screen">
+    <!-- Sidebar -->
+    <aside
+      class="bg-green-700 text-white w-64 flex-shrink-0 hidden md:flex flex-col"
+    >
+      <div class="p-6 text-2xl font-bold border-b border-green-600">
+        🌿 BECC
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+        <a
+          href="{% url 'dashboard' %}"
+          class="block p-2 rounded hover:bg-green-800 {% if request.path == '/dashboard/' %}bg-green-800{% endif %}"
+          >Dashboard</a
+        >
+        <a
+          href="{% url 'project_list' %}"
+          class="block p-2 rounded hover:bg-green-800 {% if '/projects/' in request.path %}bg-green-800{% endif %}"
+          >Projects</a
+        >
+        <a
+          href="{% url 'pillar_list' %}"
+          class="block p-2 rounded hover:bg-green-800 {% if '/pillars/' in request.path %}bg-green-800{% endif %}"
+        >
+          Pillars
+        </a>
+        <a
+          href="{% url 'event_list' %}"
+          class="block p-2 rounded hover:bg-green-800 {% if '/events/' in request.path %}bg-green-800{% endif %}"
+          >Events</a
+        >
+        <a href="#" class="block p-2 rounded hover:bg-green-800">Partners</a>
+        <a href="#" class="block p-2 rounded hover:bg-green-800">Volunteers</a>
+      </nav>
+      <div class="p-4 border-t border-green-600 text-sm">
+        Logged in as <strong>{{ request.user.username }}</strong>
+        <br />
+        <a href="{% url 'admin:logout' %}" class="text-red-200 hover:underline"
+          >Logout</a
+        >
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 overflow-y-auto">
+      <header class="bg-white shadow p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-green-700">
+          {% block header %}{% endblock %}
+        </h1>
+      </header>
+      <div class="p-6">{% block content %}{% endblock %}</div>
+    </main>
+  </body>
+</html>

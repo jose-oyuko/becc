@@ -1,0 +1,59 @@
+{% extends 'core/dashboard_base.html' %} {% block title %}Pillars | BECC
+{%endblock %} {% block header %}Pillars{% endblock %} {% block content %}
+
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-2xl font-bold text-green-700">All Pillars</h2>
+  <a
+    href="{% url 'pillar_create' %}"
+    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+    >+ Add Pillar</a
+  >
+</div>
+
+{% if messages %} {% for message in messages %}
+<div
+  class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
+>
+  {{ message }}
+</div>
+{% endfor %} {% endif %}
+
+<div class="overflow-x-auto bg-white rounded-lg shadow">
+  <table class="min-w-full">
+    <thead class="bg-green-600 text-white">
+      <tr>
+        <th class="p-3 text-left">Title</th>
+        <th class="p-3 text-left">Description</th>
+        <th class="p-3 text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pillar in pillars %}
+      <tr class="border-b hover:bg-gray-50">
+        <td class="p-3 font-medium">{{ pillar.title }}</td>
+        <td class="p-3">{{ pillar.description|truncatewords:15 }}</td>
+        <td class="p-3 text-right">
+          <a
+            href="{% url 'pillar_update' pillar.id %}"
+            class="text-blue-600 hover:underline"
+            >Edit</a
+          >
+          |
+          <a
+            href="{% url 'pillar_delete' pillar.id %}"
+            class="text-red-600 hover:underline"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="p-3 text-center text-gray-500">
+          No pillars yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'core/dashboard_base.html'%}{% load static %} {% load custom_tags %}
+{% block title %}{{ title }} | BECC {%endblock %} {% block header %}{{ title
+}}{% endblock %} {% block content %}
+
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-2xl font-bold text-green-700">{{ title }}</h2>
+  <a
+    href="{{ add_url }}"
+    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+    >+ Add {{ single_name }}</a
+  >
+</div>
+
+{% if messages %} {% for message in messages %}
+<div
+  class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
+>
+  {{ message }}
+</div>
+{% endfor %} {% endif %}
+
+<div class="overflow-x-auto bg-white rounded-lg shadow">
+  <table class="min-w-full">
+    <thead class="bg-green-600 text-white">
+      <tr>
+        {% for header in headers %}
+        <th class="p-3 text-left">{{ header }}</th>
+        {% endfor %}
+        <th class="p-3 text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for obj in objects %}
+      <tr class="border-b hover:bg-gray-50">
+        {% for field in fields %}
+        <td class="p-3">{{ obj|attr:field }}</td>
+        {% endfor %}
+        <td class="p-3 text-right">
+          <a
+            href="{{ edit_base_url }}{{ obj.id }}/"
+            class="text-blue-600 hover:underline"
+            >Edit</a
+          >
+          |
+          <a
+            href="{{ delete_base_url }}{{ obj.id }}/"
+            class="text-red-600 hover:underline"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td
+          colspan="{{ headers|length|add:1 }}"
+          class="p-3 text-center text-gray-500"
+        >
+          No {{ plural_name|lower }} found.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

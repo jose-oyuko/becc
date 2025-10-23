@@ -1,0 +1,17 @@
+{% extends 'core/dashboard_base.html' %} {% block title %}{{ title }} | BECC
+{%endblock %} {% block header %}{{ title }}{% endblock %} {% block content %}
+<div class="bg-white p-8 rounded-xl shadow-md w-full max-w-2xl">
+  <form method="post" class="space-y-4">
+    {% csrf_token %} {{ form.as_p }}
+    <button
+      type="submit"
+      class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+    >
+      Save
+    </button>
+    <a href="{% url 'pillar_list' %}" class="ml-2 text-gray-600 hover:underline"
+      >Cancel</a
+    >
+  </form>
+</div>
+{% endblock %}

@@ -1,85 +1,27 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BECC Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-green-700 text-white p-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">🌿 BECC Dashboard</h1>
-      <div>
-        <span class="mr-4">Hello, {{ request.user.username }}</span>
-        <a
-          href="{% url 'admin:logout' %}"
-          class="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-          >Logout</a
-        >
-      </div>
-    </nav>
+{% extends 'core/dashboard_base.html' %} {% block title %} Dashboard | BECC
+{%endblock %} {% block header %} Dashboard {% endblock %} {% block content %}
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <a
+    href="{% url 'project_list' %}"
+    class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition block"
+  >
+    <h2 class="text-gray-600 text-sm uppercase">Total Projects</h2>
+    <p class="text-3xl font-bold text-green-700">{{ projects_count }}</p>
+  </a>
 
-    <!-- Main Section -->
-    <div class="p-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Total Projects</h2>
-        <p class="text-3xl font-bold text-green-700">{{ projects_count }}</p>
-      </div>
+  <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-gray-600 text-sm uppercase">Events</h2>
+    <p class="text-3xl font-bold text-indigo-600">{{ events_count }}</p>
+  </div>
 
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Active Projects</h2>
-        <p class="text-3xl font-bold text-blue-600">{{ active_projects }}</p>
-      </div>
+  <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-gray-600 text-sm uppercase">Partners</h2>
+    <p class="text-3xl font-bold text-yellow-600">{{ partners_count }}</p>
+  </div>
 
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Completed Projects</h2>
-        <p class="text-3xl font-bold text-emerald-600">
-          {{ completed_projects }}
-        </p>
-      </div>
-
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Events</h2>
-        <p class="text-3xl font-bold text-indigo-600">{{ events_count }}</p>
-      </div>
-
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Partners</h2>
-        <p class="text-3xl font-bold text-yellow-600">{{ partners_count }}</p>
-      </div>
-
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Volunteers</h2>
-        <p class="text-3xl font-bold text-pink-600">{{ volunteers_count }}</p>
-      </div>
-
-      <div
-        class="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-      >
-        <h2 class="text-gray-600 text-sm uppercase">Total Donations</h2>
-        <p class="text-3xl font-bold text-orange-600">
-          KSh {{ total_donations|floatformat:2 }}
-        </p>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="text-center text-gray-500 text-sm mt-10 mb-4">
-      © 2025 Brightstar Environmental Conservation Centre
-    </footer>
-  </body>
-</html>
+  <div class="bg-white rounded-2xl p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-gray-600 text-sm uppercase">Volunteers</h2>
+    <p class="text-3xl font-bold text-pink-600">{{ volunteers_count }}</p>
+  </div>
+</div>
+{% endblock %}

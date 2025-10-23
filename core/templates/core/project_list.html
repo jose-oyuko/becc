@@ -1,0 +1,64 @@
+{% extends 'core/dashboard_base.html' %} {% block title %}Projects | BECC
+{%endblock %} {% block header %}Projects{% endblock %} {% block content %}
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-2xl font-bold text-green-700">All Projects</h2>
+  <a
+    href="{% url 'project_create' %}"
+    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+    >+ Add Project</a
+  >
+</div>
+
+{% if messages %} {% for message in messages %}
+<div
+  class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
+>
+  {{ message }}
+</div>
+{% endfor %} {% endif %}
+
+<div class="overflow-x-auto bg-white rounded-lg shadow">
+  <table class="min-w-full">
+    <thead class="bg-green-600 text-white">
+      <tr>
+        <th class="p-3 text-left">Title</th>
+        <th class="p-3 text-left">Pillar</th>
+        <th class="p-3 text-left">Status</th>
+        <th class="p-3 text-left">Start</th>
+        <th class="p-3 text-left">End</th>
+        <th class="p-3 text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+      <tr class="border-b hover:bg-gray-50">
+        <td class="p-3">{{ project.title }}</td>
+        <td class="p-3">{{ project.pillar }}</td>
+        <td class="p-3">{{ project.status }}</td>
+        <td class="p-3">{{ project.start_date }}</td>
+        <td class="p-3">{{ project.end_date }}</td>
+        <td class="p-3 text-right">
+          <a
+            href="{% url 'project_update' project.id %}"
+            class="text-blue-600 hover:underline"
+            >Edit</a
+          >
+          |
+          <a
+            href="{% url 'project_delete' project.id %}"
+            class="text-red-600 hover:underline"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="p-3 text-center text-gray-500">
+          No projects found.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

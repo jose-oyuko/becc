@@ -1,0 +1,21 @@
+{% extends 'core/dashboard_base.html' %} {% block title %}Delete {{single_name}}
+| BECC{% endblock %} {% block header %}Delete {{ single_name }}{% endblock %}
+{%block content %}
+<div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md text-center">
+  <p class="mb-6 text-gray-600">
+    Are you sure you want to delete <strong>{{ object }}</strong>?
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    <button
+      type="submit"
+      class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+    >
+      Yes, Delete
+    </button>
+    <a href="{{ back_url }}" class="ml-3 text-gray-600 hover:underline"
+      >Cancel</a
+    >
+  </form>
+</div>
+{% endblock %}
