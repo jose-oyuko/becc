@@ -4,6 +4,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Brightstar Environmental Conservation Centre (BECC) empowers communities through sustainable development, conservation, and education."
+    />
+    <meta
+      name="keywords"
+      content="BECC, environment, Kenya, sustainability, conservation, community development"
+    />
     <title>{% block title %}BECC Dashboard{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
@@ -44,6 +52,12 @@
           Partners
         </a>
         <a href="#" class="block p-2 rounded hover:bg-green-800">Volunteers</a>
+        <a
+          href="{% url 'gallery_list' %}"
+          class="block p-2 rounded hover:bg-green-800 {% if '/gallery/' in request.path %}bg-green-800{% endif %}"
+        >
+          Gallery
+        </a>
       </nav>
       <div class="p-4 border-t border-green-600 text-sm">
         Logged in as <strong>{{ request.user.username }}</strong>

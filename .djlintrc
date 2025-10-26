@@ -1,0 +1,18 @@
+[djlint]
+profile=django
+extension=html
+indent=2
+blank_line_after_tag=
+preserve_blank_lines=true
+format_attribute_template_tags=false
+format_js=false
+format_css=false
+max_line_length=120
+close_void_tags=true
+ignore=templates/core/*
+ignore_codes=H030,H031
+# --- formatting rules ---
+format_enabled=true
+# prevent djlint from splitting block/include lines
+require_newline_before_tag=false
+require_newline_after_tag=false

@@ -1,5 +1,18 @@
 from django import forms
-from .models import Project, Pillar, Event, Partner
+from .models import Project, Pillar, Event, Partner, Gallery
+
+class GalleryForm(forms.ModelForm):
+    class Meta:
+        model = Gallery
+        fields = ['title', 'description', 'image', 'related_event', 'related_project']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 3}),
+            'related_event': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'related_project': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+        }
+
 
 class PartnerForm(forms.ModelForm):
     class Meta:

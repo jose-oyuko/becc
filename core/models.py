@@ -1,6 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class ContactMessage(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.email})"
+
+
+class Gallery(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='meadia/gallery/')
+    related_event = models.ForeignKey('Event', on_delete=models.SET_NULL, null=True, blank=True)
+    related_project = models.ForeignKey('Project', on_delete=models.SET_NULL, null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
 class OrganizationInfo(models.Model):
     name = models.CharField(max_length=255)
     vision = models.TextField()
