@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-u=q*f_mo$_!8&i@!2$1t526y&+kc=^5%j420&z#i#2+3u*jvfv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -132,11 +132,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 # The directory where collectstatic will gather all static files for production
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.environ.get('STATIC_ROOT')
 # Additional locations of static files (Django will look here too)
 STATICFILES_DIRS = [
-    BASE_DIR / 'core' / 'static',  # <-- points to your core/static folder
+    os.path.join(BASE_DIR, 'core/static')
 ]
 
 # Default primary key field type
