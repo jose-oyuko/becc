@@ -1,3 +1,4 @@
+{% load static %}
 <nav
   x-data="{ isScrolled: false, isMobileMenuOpen: false }"
   x-init="
@@ -15,7 +16,11 @@
         <div
           class="w-12 h-12 bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
         >
-          <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+          <img
+    src="{% static 'images/logo.jpg' %}"
+    alt="BECC Logo"
+    class="w-12 h-12 object-contain rounded-full shadow-md transition-transform group-hover:scale-110"
+  />
         </div>
         <div class="hidden sm:block">
           <span class="text-xl font-bold text-gray-900">BECC</span>
