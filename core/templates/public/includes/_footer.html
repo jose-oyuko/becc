@@ -1,6 +1,91 @@
-<footer class="bg-gray-900 text-gray-300 py-12 mt-20">
-    <div class="container mx-auto px-6 text-center">
-        <p class="text-sm mb-2">© {{ now|date:"Y" }} Brightstar Environmental Conservation Centre (BECC)</p>
-        <p class="text-sm text-gray-400">All Rights Reserved.</p>
+<footer class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white">
+  <div class="container mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-4 gap-12 mb-12">
+      <!-- Logo and About -->
+      <div>
+        <a href="/" class="flex items-center gap-2 mb-4">
+          <div
+            class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
+          >
+            <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <span class="text-xl font-bold text-white">BECC</span>
+            <p class="text-xs text-white/80">Mazingira Bora</p>
+          </div>
+        </a>
+        <p class="text-sm text-white/80 leading-relaxed">
+          Centre of excellence promoting sustainable environmental conservation through
+          practice and knowledge sharing.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-bold mb-4 text-white">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">About Us</a></li>
+          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Our Pillars</a></li>
+          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Projects</a></li>
+          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Gallery</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h3 class="font-bold mb-4 text-white">Contact Info</h3>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-2 text-sm text-white/80">
+            <i data-lucide="map-pin" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+            <span>BECC Eco Centre, Kakamega-Webuye Road, Kenya</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm text-white/80">
+            <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
+            <a href="tel:+254724390717" class="hover:text-white transition-colors">
+              +254 724 390 717
+            </a>
+          </li>
+          <li class="flex items-center gap-2 text-sm text-white/80">
+            <i data-lucide="mail" class="w-4 h-4 flex-shrink-0"></i>
+            <a
+              href="mailto:brightstarecckenya@gmail.com"
+              class="hover:text-white transition-colors break-all"
+            >
+              brightstarecckenya@gmail.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social Media -->
+      <div>
+        <h3 class="font-bold mb-4 text-white">Follow Us</h3>
+        <div class="flex gap-3 mb-6">
+          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+            <i data-lucide="facebook" class="w-5 h-5 text-white"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+            <i data-lucide="twitter" class="w-5 h-5 text-white"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+            <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
+          </a>
+          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+            <i data-lucide="linkedin" class="w-5 h-5 text-white"></i>
+          </a>
+        </div>
+        <p class="text-sm text-white/80">
+          Join our community and stay updated on our conservation initiatives.
+        </p>
+      </div>
     </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-white/20 pt-8 text-center">
+      <p class="text-sm text-white/80">
+        © <script>document.write(new Date().getFullYear());</script>
+        Brightstar Environmental Conservation Centre. All rights reserved.
+      </p>
+    </div>
+  </div>
 </footer>

@@ -1,0 +1,132 @@
+<section class="py-24 bg-muted">
+  <div class="container mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-fade-in">
+        <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+          Get in <span class="text-primary">Touch</span>
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Have questions or want to collaborate? We'd love to hear from you.
+        </p>
+      </div>
+
+      <!-- Contact Info Cards -->
+      <div class="grid md:grid-cols-3 gap-8 mb-12">
+        <!-- Location -->
+        <div
+          class="p-6 text-center bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow animate-scale-in"
+        >
+          <div
+            class="w-14 h-14 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4"
+          >
+            <i data-lucide="map-pin" class="w-7 h-7 text-primary-foreground"></i>
+          </div>
+          <h3 class="font-bold text-foreground mb-2">Location</h3>
+          <p class="text-sm text-muted-foreground">
+            BECC Eco Centre, Okumu Market<br />
+            Kakamega-Webuye Road<br />
+            P.O Box 2451-50100, Kakamega, Kenya
+          </p>
+        </div>
+
+        <!-- Email -->
+        <div
+          class="p-6 text-center bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow animate-scale-in"
+          style="animation-delay: 100ms"
+        >
+          <div
+            class="w-14 h-14 bg-gradient-earth rounded-xl flex items-center justify-center mx-auto mb-4"
+          >
+            <i data-lucide="mail" class="w-7 h-7 text-secondary-foreground"></i>
+          </div>
+          <h3 class="font-bold text-foreground mb-2">Email</h3>
+          <a
+            href="mailto:brightstarecckenya@gmail.com"
+            class="text-sm text-primary hover:underline"
+            >brightstarecckenya@gmail.com</a
+          >
+        </div>
+
+        <!-- Phone -->
+        <div
+          class="p-6 text-center bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow animate-scale-in"
+          style="animation-delay: 200ms"
+        >
+          <div
+            class="w-14 h-14 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4"
+          >
+            <i data-lucide="phone" class="w-7 h-7 text-accent-foreground"></i>
+          </div>
+          <h3 class="font-bold text-foreground mb-2">Phone</h3>
+          <a href="tel:+254724390717" class="text-sm text-primary hover:underline"
+            >+254 724 390 717</a
+          >
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="bg-white rounded-2xl shadow-md p-8 animate-fade-in">
+        <form class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Name -->
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Name</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your name"
+                required
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-foreground mb-2">Email</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                required
+                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Subject</label>
+            <input
+              type="text"
+              name="subject"
+              placeholder="How can we help?"
+              required
+              class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label class="block text-sm font-medium text-foreground mb-2">Message</label>
+            <textarea
+              name="message"
+              rows="5"
+              placeholder="Tell us more about your inquiry..."
+              required
+              class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+            ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="w-full py-3 px-6 bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white font-semibold rounded-lg shadow-md hover:opacity-90 transition-all duration-300"
+            >
+            Send Message
+        </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
