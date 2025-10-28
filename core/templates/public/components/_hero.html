@@ -1,16 +1,61 @@
-<section id="hero"
-         class="bg-gradient-to-r from-green-700 to-emerald-700 text-white py-24 md:py-40 text-center">
-    <div class="container mx-auto px-6">
-        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">Building Empowered and Sustainable Communities</h1>
-        <p class="text-xl md:text-2xl text-emerald-100 mb-8 max-w-3xl mx-auto">
-            Empowering communities through education, conservation, and sustainable
-            livelihoods.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#about"
-               class="px-8 py-4 bg-white text-green-700 font-semibold rounded-lg shadow hover:bg-green-50 transition">Learn More</a>
-            <a href="#contact"
-               class="px-8 py-4 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-green-700 transition">Get Involved</a>
-        </div>
+<!-- Hero Section -->
+<section
+  class="relative h-screen flex items-center justify-center text-center text-white"
+  style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center;"
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-green-900/70"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 px-6 max-w-3xl mx-auto">
+    <div class="mb-4">
+      <span class="inline-flex items-center bg-white/20 text-white text-sm px-4 py-1.5 rounded-full backdrop-blur-sm">
+        🌿 Inclusive Environmental Conservation
+      </span>
     </div>
+
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+      Brightstar Environmental
+      <span class="text-yellow-400">Conservation Centre</span>
+    </h1>
+
+    <h2 class="text-lg md:text-xl text-green-100 mb-6">
+      Mazingira Bora — Better Environment
+    </h2>
+
+    <p class="text-base md:text-lg text-green-50 mb-10 leading-relaxed">
+      Environmental conservation through practice and knowledge sharing for clean air,
+      biodiversity, and sustainable land use management in diverse ecosystems.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="#about"
+        class="inline-flex items-center justify-center px-8 py-3 bg-white text-green-800 font-semibold rounded-lg shadow hover:bg-green-50 transition"
+      >
+        Learn More
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 w-5 h-5" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+
+      <a
+        href="#contact"
+        class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-green-800 transition"
+      >
+        Get Involved
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+      viewBox="0 0 24 24" stroke="white">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
 </section>

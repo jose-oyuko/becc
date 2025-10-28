@@ -1,17 +1,64 @@
-<nav class="fixed top-0 left-0 w-full bg-gradient-to-r from-green-700 to-emerald-700 text-white shadow z-50">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <span class="text-2xl font-bold">BECC</span>
-        </div>
-        <div class="hidden md:flex space-x-8">
-            <a href="#about" class="hover:text-emerald-200">About</a>
-            <a href="#pillars" class="hover:text-emerald-200">Pillars</a>
-            <a href="#projects" class="hover:text-emerald-200">Projects</a>
-            <a href="#events" class="hover:text-emerald-200">Events</a>
-            <a href="#gallery" class="hover:text-emerald-200">Gallery</a>
-            <a href="#contact" class="hover:text-emerald-200">Contact</a>
-        </div>
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-green-900/60 backdrop-blur-md text-white">
+  <div class="container mx-auto flex items-center justify-between px-6 py-4">
+    <!-- Logo & Tagline -->
+    <div class="flex items-center space-x-2">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1920&q=80" alt="BECC Logo" class="w-8 h-8 object-contain" />
+      <div>
+        <span class="text-xl font-bold">BECC</span>
+        <p class="text-xs text-green-200 -mt-1">Mazingira Bora</p>
+      </div>
     </div>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden md:flex items-center space-x-8 text-sm font-medium">
+      <li><a href="#about" class="hover:text-green-200 transition">About</a></li>
+      <li><a href="#pillars" class="hover:text-green-200 transition">Pillars</a></li>
+      <li><a href="#projects" class="hover:text-green-200 transition">Projects</a></li>
+      <li><a href="#gallery" class="hover:text-green-200 transition">Gallery</a></li>
+      <li><a href="#contact" class="hover:text-green-200 transition">Contact</a></li>
+    </ul>
+
+    <!-- Get Involved Button -->
+    <a
+      href="#contact"
+      class="hidden md:inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+    >
+      Get Involved
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-green-800/90 backdrop-blur-sm">
+    <ul class="flex flex-col items-center space-y-4 py-4 text-sm font-medium">
+      <li><a href="#about" class="hover:text-green-200">About</a></li>
+      <li><a href="#pillars" class="hover:text-green-200">Pillars</a></li>
+      <li><a href="#projects" class="hover:text-green-200">Projects</a></li>
+      <li><a href="#gallery" class="hover:text-green-200">Gallery</a></li>
+      <li><a href="#contact" class="hover:text-green-200">Contact</a></li>
+      <li>
+        <a href="#contact"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+        >Get Involved</a>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("mobile-menu-btn");
+      const menu = document.getElementById("mobile-menu");
+      btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+    });
+  </script>
 </nav>
-<div class="h-16"></div>
-<!-- spacer for fixed nav -->

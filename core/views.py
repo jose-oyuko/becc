@@ -50,13 +50,63 @@ def contact(request):
 
 
 def home(request):
+    icon = """<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
+</svg>
+"""
+    pillars = [
+        {
+            "icon": "fas fa-tree",
+            "title": "Environmental Protection",
+            "description": "Climate action initiatives promoting flora and fauna in healthy soil, water, and air through green and blue economy technologies.",
+            "gradient": "bg-gradient-to-br from-green-400 to-green-700",
+            "activities": ["Tree planting", "Waste management", "Indigenous seed conservation"],
+        },
+        {
+            "icon": "fas fa-seedling",
+            "title": "Agriculture & Food Security",
+            "description": "Technical and financial capacity development for sustainable production, distribution, and consumption of food and agro-industrial crops.",
+            "gradient": "bg-gradient-to-br from-yellow-400 to-yellow-600",
+            "activities": ["Organic farming", "Hydroponics", "Apiculture"],
+        },
+        {
+            "icon": "fas fa-water",
+            "title": "Water, Sanitation & Health",
+            "description": "Advancing technologies by engaging with communities for improved socio-economic status through sustainable water solutions.",
+            "gradient": "bg-gradient-to-br from-sky-400 to-sky-600",
+            "activities": ["Water harvesting", "Spring protection", "Aquaculture"],
+        },
+        {
+            "icon": "fas fa-chart-line",
+            "title": "Entrepreneurship & Business",
+            "description": "Promoting business development in environmental conservation and agribusiness for employment and wealth creation.",
+            "gradient": "bg-gradient-to-br from-emerald-400 to-green-700",
+            "activities": ["Ecotourism", "Community centers", "Resource mobilization"],
+        },
+    ]
+    projects = [
+        {
+            "title": "Community Tree Planting",
+            "description": "Restoration of degraded forests and lands through collaborative community tree planting initiatives.",
+            "image": "/static/images/community-planting.jpg",
+            "category": "Environmental Protection",
+        },
+        {
+            "title": "Sustainable Agriculture",
+            "description": "Promoting organic farming and indigenous seed conservation for food security.",
+            "image": "/static/images/soil-seedling.jpg",
+            "category": "Agriculture",
+        },
+        {
+            "title": "Water Harvesting Systems",
+            "description": "Installing rainwater harvesting and spring protection systems in rural communities.",
+            "image": "/static/images/water-conservation.jpg",
+            "category": "Water & Sanitation",
+        },
+    ]
     context = {
-        "pillars": Pillar.objects.all(),
-        "projects": Project.objects.all()[:6],
-        "events": Event.objects.all().order_by('-date')[:6],
-        "gallery": Gallery.objects.all()[:8],
-        "partners": Partner.objects.all(),
-        "current_year": datetime.now().year,
+        "pillars": pillars,
+        "projects": projects,
     }
     return render(request, "public/home.html", context)
 
