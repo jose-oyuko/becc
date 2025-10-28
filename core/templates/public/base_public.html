@@ -24,6 +24,8 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
 
   </head>
 
@@ -34,5 +36,9 @@
     <main>{% block content %}{% endblock %}</main>
 
     {% include 'public/includes/_footer.html' %}
+    <script>
+  lucide.createIcons();
+</script>
+
   </body>
 </html>
