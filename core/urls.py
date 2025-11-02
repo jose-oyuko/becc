@@ -35,6 +35,9 @@ urlpatterns = [
     path("projects/", views.projects_page, name="projects_page"),
     path("gallery/", views.gallery_page, name="gallery_page"),
     path("contact/", views.contact, name="contact"),
+    path("about/", views.about, name="about"),
+    path("contact/", views.contact, name="contact"),
+
 
 
 
