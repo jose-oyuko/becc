@@ -1,0 +1,63 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Projects | BECC{% endblock %}
+
+{% block content %}
+  {% include "public/includes/_navbar.html" %}
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 bg-gradient-to-br from-green-700 via-green-600 to-green-500">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center animate-fade-in">
+        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">Our Projects</h1>
+        <p class="text-xl text-white/90 leading-relaxed">
+          Impactful initiatives creating sustainable change in communities across Kenya.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+        {% for project in projects %}
+        <div class="overflow-hidden bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 animate-scale-in" style="animation-delay: {{ forloop.counter0|add:'50' }}ms;">
+          <div class="relative h-64 overflow-hidden">
+            <img
+              src="{% static project.image %}"
+              alt="{{ project.title }}"
+              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+              <span class="bg-green-700 text-white px-4 py-1.5 rounded-full text-sm font-medium">{{ project.category }}</span>
+              <span class="border border-white/80 text-white px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm">{{ project.status }}</span>
+            </div>
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ project.title }}</h3>
+            <p class="text-gray-600 leading-relaxed mb-6">{{ project.description }}</p>
+
+            <div>
+              <h4 class="text-sm font-bold text-gray-900 mb-3">Impact Metrics</h4>
+              <ul class="space-y-2">
+                {% for metric in project.impact %}
+                <li class="flex items-center gap-2 text-sm text-gray-600">
+                  <div class="w-1.5 h-1.5 rounded-full bg-green-600"></div>
+                  {{ metric }}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  
+{% endblock %}

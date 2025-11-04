@@ -10,6 +10,60 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render
 
+def projects(request):
+    projects = [
+        {
+            "title": "Community Tree Planting Initiative",
+            "category": "Environmental Protection",
+            "image": "images/community-planting.jpg",
+            "description": "Large-scale tree planting program restoring degraded forests and lands through collaborative community engagement. We work with local communities to plant indigenous tree species, creating sustainable forests for future generations.",
+            "impact": ["5,000+ trees planted", "10 communities involved", "50 hectares restored"],
+            "status": "Active",
+        },
+        {
+            "title": "Sustainable Organic Farming Program",
+            "category": "Agriculture",
+            "image": "images/soil-seedling.jpg",
+            "description": "Training farmers in organic farming techniques, indigenous seed conservation, and sustainable agricultural practices. This program promotes food security while protecting soil health and biodiversity.",
+            "impact": ["200+ farmers trained", "15 organic farms established", "30 seed varieties preserved"],
+            "status": "Active",
+        },
+        {
+            "title": "Water Harvesting & Spring Protection",
+            "category": "Water & Sanitation",
+            "image": "images/water-conservation.jpg",
+            "description": "Installing rainwater harvesting systems and protecting natural springs in rural communities. This initiative ensures clean water access while promoting sustainable water resource management.",
+            "impact": ["25 springs protected", "100+ households with harvesting systems", "500,000L water capacity"],
+            "status": "Active",
+        },
+        {
+            "title": "Solar Energy Distribution",
+            "category": "Entrepreneurship",
+            "image": "images/soil-seedling.jpg",
+            "description": "Producing and distributing solar energy devices to communities, promoting clean energy adoption and reducing reliance on fossil fuels.",
+            "impact": ["150 solar units distributed", "50 businesses supported", "200+ households powered"],
+            "status": "Active",
+        },
+        {
+            "title": "Waste Management & Recycling",
+            "category": "Environmental Protection",
+            "image": "images/community-planting.jpg",
+            "description": "Community-based waste collection, recycling, and safe disposal programs. Teaching communities about waste reduction and circular economy principles.",
+            "impact": ["5 tons waste recycled monthly", "8 communities served", "30 jobs created"],
+            "status": "Active",
+        },
+        {
+            "title": "Apiculture Development",
+            "category": "Agriculture",
+            "image": "images/water-conservation.jpg",
+            "description": "Supporting communities in beekeeping for honey production and pollination services, promoting biodiversity and creating sustainable income sources.",
+            "impact": ["80 beehives established", "40 beekeepers trained", "500kg honey produced annually"],
+            "status": "Active",
+        },
+    ]
+    return render(request, "public/projects.html", {"projects": projects})
+
+
 def gallery(request):
     gallery_images = [
         {"src": "images/hero-landscape.jpg", "title": "African Landscape Conservation", "category": "Nature"},
@@ -126,15 +180,6 @@ def pillars(request):
         },
     ]
     return render(request, "public/pillars.html", {"pillars": pillars})
-
-
-def projects_page(request):
-    projects = Project.objects.all()
-    return render(request, "public/projects_page.html", {"projects": projects})
-
-def gallery_page(request):
-    gallery = Gallery.objects.all()
-    return render(request, "public/gallery_page.html", {"gallery": gallery})
 
 
 def home(request):
