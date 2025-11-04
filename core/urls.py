@@ -31,7 +31,7 @@ urlpatterns = [
     path('dashboard/gallery/delete/<int:pk>/', views.gallery_delete, name='gallery_delete'),
     # Public website routes
     path("", views.home, name="home"),
-    path("pillars/", views.pillars_page, name="pillars_page"),
+    path("pillars/", views.pillars, name="pillars"),
     path("projects/", views.projects_page, name="projects_page"),
     # path("gallery/", views.gallery_page, name="gallery_page"),
     path("contact/", views.contact, name="contact"),

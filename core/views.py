@@ -63,10 +63,70 @@ def about(request):
 
     return render(request, "public/about.html", context)
 
-def pillars_page(request):
-    # Later we’ll query from Pillar model
-    pillars = Pillar.objects.all()
-    return render(request, "public/pillars_page.html", {"pillars": pillars})
+def pillars(request):
+    pillars = [
+        {
+            "title": "Environmental Protection, Conservation & Management",
+            "description": "Promote environmental conservation through climate action initiatives that promote flora and fauna in healthy soil, water and air by enhancing green and blue economy technologies.",
+            "activities": [
+                "Collaborative research and development of technologies",
+                "Tree planting in marine and terrestrial lands",
+                "Commercial nurseries for trees, fruits, and medicinal plants",
+                "Collection and preservation of diverse plant germplasm",
+                "Waste collection, reduction, recycling, and safe disposal",
+                "Solar energy devices production and marketing",
+                "Indigenous seed collection and banking",
+                "Wildlife clubs and ethnobotany initiatives",
+                "Environmental impact assessment and auditing",
+            ],
+        },
+        {
+            "title": "Agriculture, Food & Nutrition Security",
+            "description": "Promotion of agriculture, food and nutrition security through technical and financial capacity development for sustainable production, distribution and consumption of food and agro-industrial crops.",
+            "activities": [
+                "Promoting organic farming practices",
+                "Documenting experiential learning by farmers",
+                "Hydroponics, floriculture, and olericulture",
+                "Apiculture and meliponiculture (bee farming)",
+                "Sericulture (silk production)",
+                "Vermicomposting for soil enrichment",
+                "Indigenous crop variety preservation",
+                "Sustainable food production training",
+            ],
+        },
+        {
+            "title": "Water, Sanitation & Health",
+            "description": "Promote water, sanitation and health advancing technologies by engaging and working with communities for improved socio-economic status for all.",
+            "activities": [
+                "Water works including supply of equipment and materials",
+                "Water harvesting engineering works",
+                "Safe water storage technologies (domestic and industrial)",
+                "Spring protection initiatives",
+                "Rooftop rainfall water harvesting systems",
+                "Wetland restoration and rehabilitation",
+                "Sustainable irrigation systems",
+                "Aquaculture, mariculture, and aquaponics",
+            ],
+        },
+        {
+            "title": "Entrepreneurship & Business Development",
+            "description": "Promoting entrepreneurship and business development in environmental conservation activities and agribusiness for employment and wealth creation.",
+            "activities": [
+                "Mobilizing financial resources and investment",
+                "Establishment of community demonstration centers",
+                "Capacity development through farm visits and exhibitions",
+                "Resource mobilization for vulnerable groups",
+                "Stakeholder forums for cooperation",
+                "Agri and ecotourism ventures",
+                "Energy-saving stoves production and marketing",
+                "Ecotourism, tours, and travel services",
+                "Talent promotion through games, sports, and arts",
+                "Nature-based solutions development",
+            ],
+        },
+    ]
+    return render(request, "public/pillars.html", {"pillars": pillars})
+
 
 def projects_page(request):
     projects = Project.objects.all()
