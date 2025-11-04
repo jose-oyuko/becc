@@ -10,6 +10,18 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render
 
+def gallery(request):
+    gallery_images = [
+        {"src": "images/hero-landscape.jpg", "title": "African Landscape Conservation", "category": "Nature"},
+        {"src": "images/community-planting.jpg", "title": "Community Tree Planting", "category": "Community"},
+        {"src": "images/soil-seedling.jpg", "title": "Sustainable Agriculture", "category": "Agriculture"},
+        {"src": "images/water-conservation.jpg", "title": "Water Conservation Project", "category": "Water"},
+        {"src": "images/community-planting.jpg", "title": "Environmental Education", "category": "Education"},
+        {"src": "images/water-conservation.jpg", "title": "Spring Protection Initiative", "category": "Water"},
+    ]
+    return render(request, "public/gallery.html", {"gallery_images": gallery_images})
+
+
 def contact(request):
     if request.method == "POST":
         # Example: you can integrate email sending or save to DB

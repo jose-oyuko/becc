@@ -33,10 +33,11 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("pillars/", views.pillars_page, name="pillars_page"),
     path("projects/", views.projects_page, name="projects_page"),
-    path("gallery/", views.gallery_page, name="gallery_page"),
+    # path("gallery/", views.gallery_page, name="gallery_page"),
     path("contact/", views.contact, name="contact"),
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
+    path("gallery/", views.gallery, name="gallery"),
 
 
 
