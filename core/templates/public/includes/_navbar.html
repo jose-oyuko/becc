@@ -66,20 +66,22 @@
 
   <!-- Mobile Menu -->
   <div
-    x-show="isMobileMenuOpen"
-    x-transition
-    class="lg:hidden bg-white/98 backdrop-blur-md border-t border-gray-200"
-  >
+  x-show="isMobileMenuOpen"
+  x-transition
+  x-cloak
+  class="lg:hidden bg-white/98 backdrop-blur-md border-t border-gray-200"
+>
+
     <div class="container mx-auto px-4 py-4 flex flex-col gap-4">
       <a href="/" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Home</a>
-      <a href="#" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
-      <a href="#" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
-      <a href="#" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
-      <a href="#" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
-      <a href="#" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
+      <a href="{% url 'about' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
+      <a href="{% url 'pillars' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
+      <a href="{% url 'projects' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
+      <a href="{% url 'gallery' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
+      <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
 <!-- url for contact -->
       <a
-        href="#"
+        href="{% url 'contact' %}"
         class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white px-6 py-3 rounded-full text-center font-medium shadow-md hover:opacity-90 transition-all"
       >
         Get Involved
