@@ -1,14 +1,26 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar, Gallery, ContactMessage
 from django.db import models
 from django.contrib import messages
 from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from datetime import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render
+
+class CustomLoginView(LoginView):
+    template_name = "core/auth/login.html"
+    redirect_authenticated_user = True
+
+    # after login, send user to dashboard
+    def get_success_url(self):
+        return reverse_lazy("dashboard")
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy("login")
 
 def projects(request):
     projects = [
