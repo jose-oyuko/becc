@@ -23,57 +23,23 @@ class CustomLogoutView(LogoutView):
     next_page = reverse_lazy("login")
 
 def projects(request):
-    projects = [
+    projects = Project.objects.all().select_related('pillar')
+
+    formatted_projects = [
         {
-            "title": "Community Tree Planting Initiative",
-            "category": "Environmental Protection",
-            "image": "images/community-planting.jpg",
-            "description": "Large-scale tree planting program restoring degraded forests and lands through collaborative community engagement. We work with local communities to plant indigenous tree species, creating sustainable forests for future generations.",
-            "impact": ["5,000+ trees planted", "10 communities involved", "50 hectares restored"],
-            "status": "Active",
-        },
-        {
-            "title": "Sustainable Organic Farming Program",
-            "category": "Agriculture",
-            "image": "images/soil-seedling.jpg",
-            "description": "Training farmers in organic farming techniques, indigenous seed conservation, and sustainable agricultural practices. This program promotes food security while protecting soil health and biodiversity.",
-            "impact": ["200+ farmers trained", "15 organic farms established", "30 seed varieties preserved"],
-            "status": "Active",
-        },
-        {
-            "title": "Water Harvesting & Spring Protection",
-            "category": "Water & Sanitation",
-            "image": "images/water-conservation.jpg",
-            "description": "Installing rainwater harvesting systems and protecting natural springs in rural communities. This initiative ensures clean water access while promoting sustainable water resource management.",
-            "impact": ["25 springs protected", "100+ households with harvesting systems", "500,000L water capacity"],
-            "status": "Active",
-        },
-        {
-            "title": "Solar Energy Distribution",
-            "category": "Entrepreneurship",
-            "image": "images/soil-seedling.jpg",
-            "description": "Producing and distributing solar energy devices to communities, promoting clean energy adoption and reducing reliance on fossil fuels.",
-            "impact": ["150 solar units distributed", "50 businesses supported", "200+ households powered"],
-            "status": "Active",
-        },
-        {
-            "title": "Waste Management & Recycling",
-            "category": "Environmental Protection",
-            "image": "images/community-planting.jpg",
-            "description": "Community-based waste collection, recycling, and safe disposal programs. Teaching communities about waste reduction and circular economy principles.",
-            "impact": ["5 tons waste recycled monthly", "8 communities served", "30 jobs created"],
-            "status": "Active",
-        },
-        {
-            "title": "Apiculture Development",
-            "category": "Agriculture",
-            "image": "images/water-conservation.jpg",
-            "description": "Supporting communities in beekeeping for honey production and pollination services, promoting biodiversity and creating sustainable income sources.",
-            "impact": ["80 beehives established", "40 beekeepers trained", "500kg honey produced annually"],
-            "status": "Active",
-        },
+            "title": p.title,
+            "category": p.pillar.title if p.pillar else "Uncategorized",
+            "image": p.image.url if p.image else "/static/images/placeholder.jpg",
+            "description": p.description,
+            "impact": p.impact,  # Already a list!
+            "status": p.get_status_display(),
+        }
+        for p in projects
     ]
-    return render(request, "public/projects.html", {"projects": projects})
+
+    return render(request, "public/projects.html", {
+        "projects": formatted_projects
+    })
 
 
 def gallery(request):
@@ -229,19 +195,20 @@ def home(request):
             "activities": ["Ecotourism", "Community centers", "Resource mobilization"],
         },
     ]
+    projects = Project.objects.all().select_related('pillar')[:3]
+
+    formatted_projects = [
+        {
+            "title": p.title,
+            "category": p.pillar.title if p.pillar else "Uncategorized",
+            "image": p.image.url if p.image else "/static/images/placeholder.jpg",
+            "description": p.description,
+        }
+        for p in projects
+    ]
+
     projects = [
-        {
-            "title": "Community Tree Planting",
-            "description": "Restoration of degraded forests and lands through collaborative community tree planting initiatives.",
-            "image": "/static/images/community-planting.jpg",
-            "category": "Environmental Protection",
-        },
-        {
-            "title": "Sustainable Agriculture",
-            "description": "Promoting organic farming and indigenous seed conservation for food security.",
-            "image": "/static/images/soil-seedling.jpg",
-            "category": "Agriculture",
-        },
+        
         {
             "title": "Water Harvesting Systems",
             "description": "Installing rainwater harvesting and spring protection systems in rural communities.",
@@ -251,7 +218,7 @@ def home(request):
     ]
     context = {
         "pillars": pillars,
-        "projects": projects,
+        "projects": formatted_projects,
     }
     return render(request, "public/home.html", context)
 

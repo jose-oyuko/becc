@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
@@ -68,7 +69,12 @@ class Project(models.Model):
     location = models.CharField(max_length=255)
     image = models.ImageField(upload_to='media/projects/', blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    impact_summary = models.TextField(blank=True)
+    impact = ArrayField(
+        base_field=models.TextField(),
+        blank=True,
+        default=list,
+        help_text="Enter a list of impact points. Each entry can be long or short."
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

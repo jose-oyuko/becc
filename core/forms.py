@@ -28,9 +28,21 @@ class PartnerForm(forms.ModelForm):
 
 
 class ProjectForm(forms.ModelForm):
+    impact = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'w-full p-2 border rounded-lg',
+            'rows': 4,
+            'placeholder': 'Enter one impact per line'
+        }),
+        required=False
+    )
+
     class Meta:
         model = Project
-        fields = ['title', 'pillar', 'description', 'location', 'start_date', 'end_date', 'status', 'image']
+        fields = [
+            'title', 'pillar', 'description', 'location',
+            'start_date', 'end_date', 'status', 'image', 'impact'
+        ]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
             'pillar': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
@@ -41,6 +53,22 @@ class ProjectForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
             'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
         }
+
+    def clean_impact(self):
+        """Convert textarea input into list for the ArrayField."""
+        impact_text = self.cleaned_data.get("impact", "")
+        if not impact_text.strip():
+            return []  # Empty list if user left blank
+
+        # Split by new line, remove empties, strip spaces
+        return [line.strip() for line in impact_text.split("\n") if line.strip()]
+
+    def initial_impact(self):
+        """Convert list → newline text for initial display."""
+        if self.instance and self.instance.impact:
+            return "\n".join(self.instance.impact)
+        return ""
+
 
 class PillarForm(forms.ModelForm):
     class Meta:
