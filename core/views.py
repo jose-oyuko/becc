@@ -431,6 +431,8 @@ def pillar_create(request):
             form.save()
             messages.success(request, "Pillar added successfully!")
             return redirect('pillar_list')
+        else:
+            print("Form Errors:", form.errors)
     else:
         form = PillarForm()
     return render(request, 'core/pillar_form.html', {'form': form, 'title': 'Add Pillar'})

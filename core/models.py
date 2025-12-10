@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
+from django.db.models import JSONField
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
@@ -15,7 +16,7 @@ class ContactMessage(models.Model):
 class Gallery(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='meadia/gallery/')
+    image = models.ImageField(upload_to='media/gallery/')
     related_event = models.ForeignKey('Event', on_delete=models.SET_NULL, null=True, blank=True)
     related_project = models.ForeignKey('Project', on_delete=models.SET_NULL, null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -48,8 +49,16 @@ class OrganizationInfo(models.Model):
 class Pillar(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    short_description = models.TextField(
+        blank=True,
+        help_text="Optional shorter version for home page"
+    )
     icon = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to='media/pillars/', blank=True)
+    activities = JSONField(
+        default=list,
+        help_text="A list of activities displayed on detailed page & home page"
+    )
 
     def __str__(self):
         return self.title
@@ -125,7 +134,7 @@ class TeamMember(models.Model):
     name = models.CharField(max_length=255)
     position = models.CharField(max_length=255)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='meadia/team/', blank=True)
+    photo = models.ImageField(upload_to='media/team/', blank=True)
     contact_email = models.EmailField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
 

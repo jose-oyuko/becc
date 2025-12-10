@@ -1,5 +1,6 @@
 from django import forms
 from .models import Project, Pillar, Event, Partner, Gallery
+import json
 
 class GalleryForm(forms.ModelForm):
     class Meta:
@@ -71,13 +72,50 @@ class ProjectForm(forms.ModelForm):
 
 
 class PillarForm(forms.ModelForm):
+    # Hidden field that will store JSON activities list
+    activities_json = forms.CharField(required=False, widget=forms.HiddenInput())
+
     class Meta:
         model = Pillar
-        fields = ['title', 'description']
+        fields = [
+            "short_description",
+            "title",
+            "description",
+            "image",
+            "activities_json",    # NOT the original JSONField
+        ]
+
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
-            'description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 3}),
+            "short_description": forms.Textarea(attrs={
+                "class": "w-full p-2 border rounded-lg",
+                "rows": 3,
+            }),
+            "title": forms.TextInput(attrs={
+                "class": "w-full p-2 border rounded-lg",
+            }),
+            "description": forms.Textarea(attrs={
+                "class": "w-full p-2 border rounded-lg",
+                "rows": 4,
+            }),
+            "image": forms.ClearableFileInput(attrs={
+                "class": "w-full",
+            }),
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        
+        # Parse JSON stored in hidden field
+        activities_raw = cleaned.get("activities_json", "[]")
+        
+        try:
+            cleaned["activities"] = json.loads(activities_raw)
+        except json.JSONDecodeError:
+            self.add_error("activities_json", "Invalid activities format.")
+            cleaned["activities"] = []
+        
+        return cleaned
+
 
 class EventForm(forms.ModelForm):
     class Meta:

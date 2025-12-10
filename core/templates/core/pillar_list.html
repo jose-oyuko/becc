@@ -24,6 +24,7 @@
       <tr>
         <th class="p-3 text-left">Title</th>
         <th class="p-3 text-left">Description</th>
+        <th class="p-3 text-left">Short Description</th>
         <th class="p-3 text-right">Actions</th>
       </tr>
     </thead>
@@ -32,6 +33,7 @@
       <tr class="border-b hover:bg-gray-50">
         <td class="p-3 font-medium">{{ pillar.title }}</td>
         <td class="p-3">{{ pillar.description|truncatewords:15 }}</td>
+        <td class="p-3">{{ pillar.short_description }}</td>
         <td class="p-3 text-right">
           <a
             href="{% url 'pillar_update' pillar.id %}"
