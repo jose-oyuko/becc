@@ -75,6 +75,11 @@ class PillarForm(forms.ModelForm):
     # Hidden field that will store JSON activities list
     activities_json = forms.CharField(required=False, widget=forms.HiddenInput())
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.activities:
+            self.fields['activities_json'].initial = json.dumps(self.instance.activities)
+
     class Meta:
         model = Pillar
         fields = [
@@ -115,6 +120,16 @@ class PillarForm(forms.ModelForm):
             cleaned["activities"] = []
         
         return cleaned
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Manually assign activities from cleaned_data since it's not in Meta.fields
+        if "activities" in self.cleaned_data:
+            instance.activities = self.cleaned_data["activities"]
+        
+        if commit:
+            instance.save()
+        return instance
 
 
 class EventForm(forms.ModelForm):

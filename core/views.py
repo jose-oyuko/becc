@@ -426,7 +426,7 @@ def pillar_list(request):
 @login_required
 def pillar_create(request):
     if request.method == 'POST':
-        form = PillarForm(request.POST)
+        form = PillarForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Pillar added successfully!")
@@ -441,7 +441,7 @@ def pillar_create(request):
 def pillar_update(request, pk):
     pillar = get_object_or_404(Pillar, pk=pk)
     if request.method == 'POST':
-        form = PillarForm(request.POST, instance=pillar)
+        form = PillarForm(request.POST, request.FILES, instance=pillar)
         if form.is_valid():
             form.save()
             messages.success(request, "Pillar updated successfully!")

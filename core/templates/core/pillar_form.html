@@ -14,8 +14,39 @@
     {{ form.description.label_tag }}
     {{ form.description }}
 
-    {{ form.image.label_tag }}
+    <label class="block font-semibold mb-1">Image</label>
+    {% if form.instance.image %}
+    <div id="image-preview-container" class="relative inline-block mb-2 group">
+      <img src="{{ form.instance.image.url }}" alt="Current Image" class="h-24 w-24 object-cover rounded-lg border">
+      <button type="button" id="delete-image-btn"
+        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-red-600 focus:outline-none">
+        &times;
+      </button>
+    </div>
+    <!-- Hidden checkbox to signal Django to clear the image -->
+    <input type="checkbox" name="image-clear" id="image-clear_id" class="hidden">
+    {% endif %}
+
     {{ form.image }}
+
+    <!-- Script to handle image deletion -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const deleteBtn = document.getElementById("delete-image-btn");
+        const previewContainer = document.getElementById("image-preview-container");
+        const clearCheckbox = document.getElementById("image-clear_id");
+
+        if (deleteBtn) {
+          deleteBtn.addEventListener("click", function () {
+            // 1. Check the hidden 'clear' checkbox
+            if (clearCheckbox) clearCheckbox.checked = true;
+
+            // 2. Hide the preview container
+            previewContainer.style.display = 'none';
+          });
+        }
+      });
+    </script>
 
     <!-- Custom Activities UI -->
     <label class="block font-semibold mt-4">Activities</label>
