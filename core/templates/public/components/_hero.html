@@ -33,20 +33,16 @@
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <!-- about url -->
-        <a
-          href="{% url 'about' %}"
-          class="bg-white text-green-700 hover:bg-white/90 shadow-md text-lg px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center justify-center gap-2"
-        >
+        <a href="{% url 'about' %}"
+          class="bg-white text-green-700 hover:bg-white/90 shadow-md text-lg px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center justify-center gap-2">
           Learn More
           <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </a>
-        <!-- url for contact -->
-        <a
-          href="{% url 'contact' %}"
-          class="border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm text-lg px-8 py-3 rounded-full font-semibold transition-all duration-300"
-        >
-          Get Involved
-        </a>
+        <!-- Donate Button -->
+        <button onclick="toggleDonateModal(true)"
+          class="bg-green-600 border-2 border-transparent text-white hover:bg-green-700 shadow-lg text-lg px-8 py-3 rounded-full font-semibold transition-all duration-300">
+          Donate
+        </button>
       </div>
     </div>
   </div>
@@ -56,4 +52,7 @@
       <div class="w-1 h-3 bg-white/50 rounded-full"></div>
     </div>
   </div>
+
+  <!-- Include Donate Modal -->
+  {% include 'public/components/_donate_modal.html' %}
 </section>
