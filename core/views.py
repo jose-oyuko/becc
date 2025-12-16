@@ -96,105 +96,40 @@ def about(request):
     return render(request, "public/about.html", context)
 
 def pillars(request):
-    pillars = [
-        {
-            "title": "Environmental Protection, Conservation & Management",
-            "description": "Promote environmental conservation through climate action initiatives that promote flora and fauna in healthy soil, water and air by enhancing green and blue economy technologies.",
-            "activities": [
-                "Collaborative research and development of technologies",
-                "Tree planting in marine and terrestrial lands",
-                "Commercial nurseries for trees, fruits, and medicinal plants",
-                "Collection and preservation of diverse plant germplasm",
-                "Waste collection, reduction, recycling, and safe disposal",
-                "Solar energy devices production and marketing",
-                "Indigenous seed collection and banking",
-                "Wildlife clubs and ethnobotany initiatives",
-                "Environmental impact assessment and auditing",
-            ],
-        },
-        {
-            "title": "Agriculture, Food & Nutrition Security",
-            "description": "Promotion of agriculture, food and nutrition security through technical and financial capacity development for sustainable production, distribution and consumption of food and agro-industrial crops.",
-            "activities": [
-                "Promoting organic farming practices",
-                "Documenting experiential learning by farmers",
-                "Hydroponics, floriculture, and olericulture",
-                "Apiculture and meliponiculture (bee farming)",
-                "Sericulture (silk production)",
-                "Vermicomposting for soil enrichment",
-                "Indigenous crop variety preservation",
-                "Sustainable food production training",
-            ],
-        },
-        {
-            "title": "Water, Sanitation & Health",
-            "description": "Promote water, sanitation and health advancing technologies by engaging and working with communities for improved socio-economic status for all.",
-            "activities": [
-                "Water works including supply of equipment and materials",
-                "Water harvesting engineering works",
-                "Safe water storage technologies (domestic and industrial)",
-                "Spring protection initiatives",
-                "Rooftop rainfall water harvesting systems",
-                "Wetland restoration and rehabilitation",
-                "Sustainable irrigation systems",
-                "Aquaculture, mariculture, and aquaponics",
-            ],
-        },
-        {
-            "title": "Entrepreneurship & Business Development",
-            "description": "Promoting entrepreneurship and business development in environmental conservation activities and agribusiness for employment and wealth creation.",
-            "activities": [
-                "Mobilizing financial resources and investment",
-                "Establishment of community demonstration centers",
-                "Capacity development through farm visits and exhibitions",
-                "Resource mobilization for vulnerable groups",
-                "Stakeholder forums for cooperation",
-                "Agri and ecotourism ventures",
-                "Energy-saving stoves production and marketing",
-                "Ecotourism, tours, and travel services",
-                "Talent promotion through games, sports, and arts",
-                "Nature-based solutions development",
-            ],
-        },
-    ]
+
+    db_pillars = Pillar.objects.all()
+    pillars = []
+
+    for i, pillar in enumerate(db_pillars):
+        pillars.append({
+            "title": pillar.title,
+            "description": pillar.short_description or pillar.description,
+            "activities": pillar.activities,
+            "icon": pillar.icon,
+        })
     return render(request, "public/pillars.html", {"pillars": pillars})
 
 
 def home(request):
-    icon = """<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
-</svg>
-"""
-    pillars = [
-        {
-            "icon": "fas fa-tree",
-            "title": "Environmental Protection",
-            "description": "Climate action initiatives promoting flora and fauna in healthy soil, water, and air through green and blue economy technologies.",
-            "gradient": "bg-gradient-to-br from-green-400 to-green-700",
-            "activities": ["Tree planting", "Waste management", "Indigenous seed conservation"],
-        },
-        {
-            "icon": "fas fa-seedling",
-            "title": "Agriculture & Food Security",
-            "description": "Technical and financial capacity development for sustainable production, distribution, and consumption of food and agro-industrial crops.",
-            "gradient": "bg-gradient-to-br from-yellow-400 to-yellow-600",
-            "activities": ["Organic farming", "Hydroponics", "Apiculture"],
-        },
-        {
-            "icon": "fas fa-water",
-            "title": "Water, Sanitation & Health",
-            "description": "Advancing technologies by engaging with communities for improved socio-economic status through sustainable water solutions.",
-            "gradient": "bg-gradient-to-br from-sky-400 to-sky-600",
-            "activities": ["Water harvesting", "Spring protection", "Aquaculture"],
-        },
-        {
-            "icon": "fas fa-chart-line",
-            "title": "Entrepreneurship & Business",
-            "description": "Promoting business development in environmental conservation and agribusiness for employment and wealth creation.",
-            "gradient": "bg-gradient-to-br from-emerald-400 to-green-700",
-            "activities": ["Ecotourism", "Community centers", "Resource mobilization"],
-        },
+    gradients = [
+        "bg-gradient-to-br from-green-400 to-green-700",
+        "bg-gradient-to-br from-yellow-400 to-yellow-600",
+        "bg-gradient-to-br from-sky-400 to-sky-600",
+        "bg-gradient-to-br from-emerald-400 to-green-700",
     ]
+
+    db_pillars = Pillar.objects.all()
+    pillars = []
+
+    for i, pillar in enumerate(db_pillars):
+        gradient = gradients[i % len(gradients)]
+        pillars.append({
+            "title": pillar.title,
+            "description": pillar.short_description or pillar.description,
+            "activities": pillar.activities[:3],
+            "icon": pillar.icon,
+            "gradient": gradient,
+        })
     projects = Project.objects.all().select_related('pillar')[:3]
 
     formatted_projects = [
