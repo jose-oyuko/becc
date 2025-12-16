@@ -19,6 +19,7 @@ class Gallery(models.Model):
     image = models.ImageField(upload_to='media/gallery/')
     related_event = models.ForeignKey('Event', on_delete=models.SET_NULL, null=True, blank=True)
     related_project = models.ForeignKey('Project', on_delete=models.SET_NULL, null=True, blank=True)
+    related_pillar = models.ForeignKey('Pillar', on_delete=models.SET_NULL, null=True, blank=True, related_name='gallery_images')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

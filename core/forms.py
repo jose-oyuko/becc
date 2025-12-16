@@ -86,7 +86,7 @@ class PillarForm(forms.ModelForm):
             "short_description",
             "title",
             "description",
-            "image",
+            # "image", Removed as per request
             "activities_json",    # NOT the original JSONField
         ]
 
@@ -102,9 +102,9 @@ class PillarForm(forms.ModelForm):
                 "class": "w-full p-2 border rounded-lg",
                 "rows": 4,
             }),
-            "image": forms.ClearableFileInput(attrs={
-                "class": "w-full",
-            }),
+            # "image": forms.ClearableFileInput(attrs={
+            #     "class": "w-full",
+            # }),
         }
 
     def clean(self):
@@ -144,3 +144,16 @@ class EventForm(forms.ModelForm):
             'is_upcoming': forms.CheckboxInput(attrs={'class': 'mr-2'}),
             'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
         }
+
+from django.forms import inlineformset_factory
+PillarGalleryFormSet = inlineformset_factory(
+    Pillar, Gallery, 
+    fields=['image', 'title', 'description'],
+    widgets = {
+        'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'Image Title'}),
+        'description': forms.Textarea(attrs={'class': 'hidden', 'rows': 2, 'placeholder': 'Short description'}), # Hidden because we handle it via JS ui? Or expose it? User said "small description attached". Let's expose it in JS UI, store in hidden or normal input.
+        'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+    },
+    extra=1,
+    can_delete=True
+)

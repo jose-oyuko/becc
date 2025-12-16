@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar, Gallery, ContactMessage
 from django.db import models
 from django.contrib import messages
-from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm
+from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm, PillarGalleryFormSet
 from django.urls import reverse, reverse_lazy
 from datetime import datetime
 from django.core.mail import send_mail
@@ -106,6 +106,7 @@ def pillars(request):
             "description": pillar.short_description or pillar.description,
             "activities": pillar.activities,
             "icon": pillar.icon,
+            "gallery_images": pillar.gallery_images.all()[:4], # Limit to 4 images
         })
     return render(request, "public/pillars.html", {"pillars": pillars})
 
@@ -123,12 +124,18 @@ def home(request):
 
     for i, pillar in enumerate(db_pillars):
         gradient = gradients[i % len(gradients)]
+        
+        # Fetch related gallery images (Limit to 2 for home page)
+        # Using reversed relationship 'gallery_images'
+        gallery_images = pillar.gallery_images.all()[:2] 
+
         pillars.append({
             "title": pillar.title,
             "description": pillar.short_description or pillar.description,
             "activities": pillar.activities[:3],
             "icon": pillar.icon,
             "gradient": gradient,
+            "gallery_images": gallery_images,
         })
     projects = Project.objects.all().select_related('pillar')[:3]
 
@@ -362,28 +369,41 @@ def pillar_list(request):
 def pillar_create(request):
     if request.method == 'POST':
         form = PillarForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        formset = PillarGalleryFormSet(request.POST, request.FILES)
+        if form.is_valid() and formset.is_valid():
+            pillar = form.save()
+            images = formset.save(commit=False)
+            for image in images:
+                image.related_pillar = pillar
+                image.save()
+            # Handle deletions if any
+            for obj in formset.deleted_objects:
+                obj.delete()
             messages.success(request, "Pillar added successfully!")
             return redirect('pillar_list')
         else:
             print("Form Errors:", form.errors)
+            print("Formset Errors:", formset.errors)
     else:
         form = PillarForm()
-    return render(request, 'core/pillar_form.html', {'form': form, 'title': 'Add Pillar'})
+        formset = PillarGalleryFormSet()
+    return render(request, 'core/pillar_form.html', {'form': form, 'formset': formset, 'title': 'Add Pillar'})
 
 @login_required
 def pillar_update(request, pk):
     pillar = get_object_or_404(Pillar, pk=pk)
     if request.method == 'POST':
         form = PillarForm(request.POST, request.FILES, instance=pillar)
-        if form.is_valid():
+        formset = PillarGalleryFormSet(request.POST, request.FILES, instance=pillar)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             messages.success(request, "Pillar updated successfully!")
             return redirect('pillar_list')
     else:
         form = PillarForm(instance=pillar)
-    return render(request, 'core/pillar_form.html', {'form': form, 'title': 'Edit Pillar'})
+        formset = PillarGalleryFormSet(instance=pillar)
+    return render(request, 'core/pillar_form.html', {'form': form, 'formset': formset, 'title': 'Edit Pillar'})
 
 @login_required
 def pillar_delete(request, pk):

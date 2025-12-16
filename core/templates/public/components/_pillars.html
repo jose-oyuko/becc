@@ -16,19 +16,16 @@
       {% for pillar in pillars %}
       <div
         class="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border-0 animate-scale-in"
-        style="animation-delay: {{ forloop.counter0|add:'100' }}ms"
-      >
-        <div
-          class="w-16 h-16 {{ pillar.gradient }} rounded-2xl flex items-center justify-center mb-6"
-        >
+        style="animation-delay: {{ forloop.counter0|add:'100' }}ms">
+        <div class="w-16 h-16 {{ pillar.gradient }} rounded-2xl flex items-center justify-center mb-6">
           <i class="{{ pillar.icon }} w-8 h-8 text-white"></i>
-          
+
         </div>
 
         <h3 class="text-2xl font-bold text-green-800 mb-4">{{ pillar.title }}</h3>
         <p class="text-gray-600 mb-6 leading-relaxed">{{ pillar.description }}</p>
 
-        <div class="space-y-2">
+        <div class="space-y-2 mb-6">
           {% for activity in pillar.activities %}
           <div class="flex items-center gap-2 text-sm text-gray-600">
             <div class="w-1.5 h-1.5 rounded-full bg-green-600"></div>
@@ -36,15 +33,30 @@
           </div>
           {% endfor %}
         </div>
+
+        {% if pillar.gallery_images %}
+        <div class="grid grid-cols-2 gap-3 pt-4 border-t border-gray-100">
+          {% for image in pillar.gallery_images %}
+          <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm group">
+            <img src="{{ image.image.url }}" alt="{{ image.title }}"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-3">
+              {% if image.description %}
+              <p class="text-white text-xs font-medium line-clamp-2">{{ image.description }}</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
       {% empty %}
       <!-- Static placeholders for now -->
       <div
-        class="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border-0 animate-scale-in"
-      >
+        class="p-8 bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border-0 animate-scale-in">
         <div
-          class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-700 rounded-2xl flex items-center justify-center mb-6"
-        >
+          class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-700 rounded-2xl flex items-center justify-center mb-6">
           <i class="fas fa-tree text-white text-2xl"></i>
         </div>
         <h3 class="text-2xl font-bold text-green-800 mb-4">Environmental Protection</h3>
@@ -72,10 +84,8 @@
 
     <!-- CTA button -->
     <div class="text-center animate-fade-in">
-      <a
-        href={% url 'pillars' %}
-        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:opacity-90 transition"
-      >
+      <a href={% url 'pillars' %}
+        class="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold shadow-md hover:opacity-90 transition">
         Explore All Pillars
         <i class="fas fa-arrow-right w-4 h-4"></i>
       </a>
