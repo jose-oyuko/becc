@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar, Gallery, ContactMessage
+from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar, Gallery, ContactMessage, OrganizationInfo, HeroImage
 from django.db import models
 from django.contrib import messages
-from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm, PillarGalleryFormSet, ProjectGalleryFormSet
+from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm, PillarGalleryFormSet, ProjectGalleryFormSet, OrganizationInfoForm, HeroImageFormSet
 from django.urls import reverse, reverse_lazy
 from datetime import datetime
 from django.core.mail import send_mail
@@ -501,3 +501,30 @@ def dashboard(request):
         "total_donations": total_donations,
     }
     return render(request, "core/dashboard.html", context)
+
+
+@login_required
+def general_info_view(request):
+    # Singleton pattern: Get the first or create
+    org_info = OrganizationInfo.objects.first()
+    if not org_info:
+        org_info = OrganizationInfo.objects.create(name="Default Organization")
+
+    if request.method == "POST":
+        form = OrganizationInfoForm(request.POST, request.FILES, instance=org_info)
+        formset = HeroImageFormSet(request.POST, request.FILES, instance=org_info)
+        
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            messages.success(request, "Organization Info updated successfully!")
+            return redirect("general_info")
+    else:
+        form = OrganizationInfoForm(instance=org_info)
+        formset = HeroImageFormSet(instance=org_info)
+
+    return render(request, "core/org_info_form.html", {
+        "form": form,
+        "formset": formset,
+        "title": "Organization Info"
+    })

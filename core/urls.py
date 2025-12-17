@@ -7,6 +7,9 @@ urlpatterns = [
     path("logout/", views.CustomLogoutView.as_view(), name="logout"),
 
     path("dashboard/", views.dashboard, name="dashboard"),
+    
+    # Organization Info
+    path("dashboard/settings/", views.general_info_view, name="general_info"),
 
     # Project CRUD
     path('dashboard/projects/', views.project_list, name='project_list'),

@@ -43,9 +43,40 @@ class OrganizationInfo(models.Model):
     tiktok = models.URLField(blank=True)
     youtube = models.URLField(blank=True)
 
+    # Hero Section
+    hero_title = models.CharField(max_length=255, blank=True)
+    hero_subtitle = models.TextField(blank=True)
+
+    # Payment Details
+    paybill_no = models.CharField(max_length=50, blank=True)
+    account_no = models.CharField(max_length=50, blank=True)
+
+    # About Page
+    about_background = models.TextField(blank=True, help_text="Our Background content")
+    
+    # Core Values (JSON List of objects: {title, description})
+    core_values = JSONField(default=list, blank=True)
+
+    # Footer & Meta
+    footer_text = models.TextField(blank=True)
+    meta_description = models.TextField(blank=True)
+    meta_keywords = models.CharField(max_length=255, blank=True)
+
 
     def __str__(self):
         return self.name
+
+class HeroImage(models.Model):
+    organization = models.ForeignKey(OrganizationInfo, on_delete=models.CASCADE, related_name='hero_images')
+    image = models.ImageField(upload_to='media/hero/')
+    caption = models.CharField(max_length=255, blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Hero Image {self.id} for {self.organization.name}"
     
 class Pillar(models.Model):
     title = models.CharField(max_length=255)
@@ -182,14 +213,6 @@ class Donation(models.Model):
         return f"{self.donor_name} - {self.amount}"
 
 
-class SiteSetting(models.Model):
-    site_name = models.CharField(max_length=100)
-    hero_title = models.CharField(max_length=255)
-    hero_image = models.ImageField(upload_to='media/hero/', blank=True)
-    about_intro = models.TextField(blank=True)
-    footer_text = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.site_name
 
 

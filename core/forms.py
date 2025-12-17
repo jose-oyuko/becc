@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Pillar, Event, Partner, Gallery
+from .models import Project, Pillar, Event, Partner, Gallery, OrganizationInfo, HeroImage
 import json
 
 class GalleryForm(forms.ModelForm):
@@ -175,6 +175,90 @@ ProjectGalleryFormSet = inlineformset_factory(
         'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'Image Title'}),
         'description': forms.Textarea(attrs={'class': 'hidden', 'rows': 2, 'placeholder': 'Short description'}),
         'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+    },
+    extra=1,
+    can_delete=True
+)
+
+
+class OrganizationInfoForm(forms.ModelForm):
+    # Hidden field for JSON handling
+    core_values_json = forms.CharField(required=False, widget=forms.HiddenInput())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            # Load existing JSON
+            self.fields['core_values_json'].initial = json.dumps(self.instance.core_values)
+
+    class Meta:
+        model = OrganizationInfo
+        fields = [
+            'name', 'logo', 'contact_email', 'phone', 'address',
+            'facebook', 'instagram', 'x', 'tiktok', 'youtube',
+            'vision', 'mission', 'goal', 'motto', 'slogan', 'about', 'about_background',
+            'hero_title', 'hero_subtitle', 
+            'paybill_no', 'account_no',
+            'footer_text', 'meta_description', 'meta_keywords',
+            'core_values_json'
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'contact_email': forms.EmailInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'phone': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'address': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 3}),
+            
+            'facebook': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'https://facebook.com/...'}),
+            'instagram': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'x': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'tiktok': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'youtube': forms.URLInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+
+            'vision': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'mission': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'goal': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'motto': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'slogan': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'about': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 4, 'placeholder': 'Short intro about the org'}),
+            'about_background': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 6}),
+
+            'hero_title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'hero_subtitle': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+
+            'paybill_no': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'account_no': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+
+            'footer_text': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'meta_description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'meta_keywords': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        core_values_raw = cleaned.get("core_values_json", "[]")
+        try:
+            cleaned["core_values"] = json.loads(core_values_raw)
+        except json.JSONDecodeError:
+            self.add_error("core_values_json", "Invalid JSON format.")
+            cleaned["core_values"] = []
+        return cleaned
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if "core_values" in self.cleaned_data:
+            instance.core_values = self.cleaned_data["core_values"]
+        if commit:
+            instance.save()
+        return instance
+
+HeroImageFormSet = inlineformset_factory(
+    OrganizationInfo, HeroImage,
+    fields=['image', 'caption', 'order'],
+    widgets={
+        'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+        'caption': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'Caption'}),
+        'order': forms.NumberInput(attrs={'class': 'w-20 p-2 border rounded-lg', 'placeholder': 'Order'}),
     },
     extra=1,
     can_delete=True

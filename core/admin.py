@@ -10,7 +10,7 @@ from .models import (
     BlogPost,
     VolunteerApplication,
     Donation,
-    SiteSetting
+    HeroImage
 )
 
 # Optional: Inline for project media
@@ -18,6 +18,9 @@ class ProjectMediaInline(admin.TabularInline):
     model = ProjectMedia
     extra = 1
 
+class HeroImageInline(admin.TabularInline):
+    model = HeroImage
+    extra = 1
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
@@ -79,8 +82,4 @@ class DonationAdmin(admin.ModelAdmin):
 @admin.register(OrganizationInfo)
 class OrganizationAdmin(admin.ModelAdmin):
     list_display = ('name', 'contact_email', 'phone')
-
-
-@admin.register(SiteSetting)
-class SiteSettingAdmin(admin.ModelAdmin):
-    list_display = ('site_name', 'hero_title')
+    inlines = [HeroImageInline]

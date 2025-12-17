@@ -1,0 +1,484 @@
+{% extends 'core/dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+            <a href="{% url 'dashboard' %}" class="text-green-600 hover:text-green-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+            <h1 class="text-3xl font-bold text-gray-800">{{ title }}</h1>
+        </div>
+        <p class="text-gray-600 ml-9">Manage general site configuration, contact details, hero slider, and about page
+            content.</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        {% csrf_token %}
+
+        <!-- Error Summary -->
+        {% if form.errors or formset.errors %}
+        <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L11 8.586 8.707 7.293z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700">Please correct the errors below.</p>
+                    {{ form.errors }}
+                    {{ formset.errors }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Tabs/Sections -->
+        <div x-data="{ activeTab: 'general' }">
+            <div class="flex border-b border-gray-200 mb-6">
+                <button type="button" @click="activeTab = 'general'"
+                    :class="activeTab === 'general' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                    class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">General Info</button>
+                <button type="button" @click="activeTab = 'hero'"
+                    :class="activeTab === 'hero' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                    class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">Hero Slider</button>
+                <button type="button" @click="activeTab = 'about'"
+                    :class="activeTab === 'about' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                    class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">About & Core Values</button>
+                <button type="button" @click="activeTab = 'payment'"
+                    :class="activeTab === 'payment' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                    class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">Payment & Footer</button>
+                <button type="button" @click="activeTab = 'social'"
+                    :class="activeTab === 'social' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                    class="px-4 py-2 border-b-2 font-medium text-sm transition-colors">Social & Meta</button>
+            </div>
+
+            <!-- General Tab -->
+            <div x-show="activeTab === 'general'" class="space-y-6 animate-fade-in">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Organization Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Logo</label>
+                        {{ form.logo }}
+                        {% if form.instance.logo %}
+                        <img src="{{ form.instance.logo.url }}" class="h-12 mt-2 object-contain">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+                        {{ form.contact_email }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                    {{ form.address }}
+                </div>
+            </div>
+
+            <!-- Hero Tab -->
+            <div x-show="activeTab === 'hero'" class="space-y-6 animate-fade-in" x-cloak>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 mb-6">
+                    <h3 class="font-bold text-gray-800 mb-4">Main Hero Text</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Hero Title</label>
+                            {{ form.hero_title }}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Hero Subtitle</label>
+                            {{ form.hero_subtitle }}
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Hero Slider Images
+                </h3>
+
+                <!-- Hero Formset Logic (Reusing Project Gallery logic conceptually) -->
+                {{ formset.management_form }}
+                <div id="form-forms" class="hidden">
+                    {% for f in formset %}
+                    <div class="form-row">
+                        {{ f.as_p }}
+                        {% if f.instance.pk %}
+                        <span class="existing-url" data-url="{{ f.instance.image.url }}"></span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Visible Gallery UI -->
+                <div id="visible-gallery-list" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <!-- JS will populate this -->
+                </div>
+
+                <!-- Add Image Area -->
+                <div
+                    class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 p-6 text-center hover:border-green-500 transition-colors">
+                    <div class="space-y-4">
+                        <div class="flex flex-col items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p class="text-gray-500 text-sm mb-4">Upload high-quality images for the hero slider</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-1">
+                                <input type="file" id="new-image-input"
+                                    class="w-full text-sm p-2 bg-white border rounded-lg" accept="image/*">
+                            </div>
+                            <div class="md:col-span-1">
+                                <input type="text" id="new-image-caption" placeholder="Caption (Optional)"
+                                    class="w-full text-sm p-2 border rounded-lg">
+                            </div>
+                            <div class="md:col-span-1 flex gap-2">
+                                <input type="number" id="new-image-order" placeholder="Order" value="0"
+                                    class="w-20 text-sm p-2 border rounded-lg">
+                                <button type="button" id="add-image-btn"
+                                    class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+                                    Add Slide
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty Form Template for JS -->
+                <div id="empty-form" class="hidden">
+                    {{ formset.empty_form.as_p }}
+                </div>
+            </div>
+
+            <!-- About Tab -->
+            <div x-show="activeTab === 'about'" class="space-y-8 animate-fade-in" x-cloak>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Vision</label>
+                        {{ form.vision }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                        {{ form.mission }}
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Goal</label>
+                        {{ form.goal }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Motto</label>
+                        {{ form.motto }}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Slogan</label>
+                    {{ form.slogan }}
+                </div>
+
+                <div class="border-t border-gray-100 pt-6"></div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">About Us (Short Intro)</label>
+                    {{ form.about }}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Our Background (Full Content)</label>
+                    {{ form.about_background }}
+                </div>
+
+                <!-- CORE VALUES -->
+                <div class="border-t border-gray-100 pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800">Core Values</h3>
+                            <p class="text-sm text-gray-500">Add values like "Cooperation", "Inclusivity", etc.</p>
+                        </div>
+                        <button type="button" id="add-core-value-btn"
+                            class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Value
+                        </button>
+                    </div>
+
+                    {{ form.core_values_json }}
+                    <div id="core-values-list" class="space-y-3">
+                        <!-- Dynamic List -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Tab -->
+            <div x-show="activeTab === 'payment'" class="space-y-6 animate-fade-in" x-cloak>
+                <h3 class="font-bold text-gray-800">M-Pesa Details</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Paybill Number</label>
+                        {{ form.paybill_no }}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Account Number</label>
+                        {{ form.account_no }}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Footer Text</label>
+                    {{ form.footer_text }}
+                </div>
+            </div>
+
+            <!-- Social Tab -->
+            <div x-show="activeTab === 'social'" class="space-y-6 animate-fade-in" x-cloak>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Facebook</label>{{ form.facebook }}
+                    </div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Instagram</label>{{ form.instagram }}</div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-2">X (Twitter)</label>{{ form.x }}
+                    </div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-2">TikTok</label>{{ form.tiktok }}
+                    </div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-2">YouTube</label>{{ form.youtube }}
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-6"></div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description (SEO)</label>
+                    {{ form.meta_description }}
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Meta Keywords</label>
+                    {{ form.meta_keywords }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end gap-3">
+            <a href="{% url 'dashboard' %}"
+                class="px-6 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 font-medium transition-colors">Cancel</a>
+            <button type="submit"
+                class="bg-green-600 text-white px-8 py-2 rounded-lg hover:bg-green-700 font-medium shadow-md transition-colors">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- SCRIPTS for Dynamic Logic -->
+<script src="{% static 'js/core_values.js' %}"></script>
+<script>
+    // Inline script for Hero Image Formset (adapted from Project Gallery)
+    document.addEventListener("DOMContentLoaded", function () {
+        const addBtn = document.getElementById("add-image-btn");
+        const visibleList = document.getElementById("visible-gallery-list");
+        const hiddenContainer = document.getElementById("form-forms");
+
+        // Dynamically find prefix
+        const totalForms = document.querySelector("input[name$='-TOTAL_FORMS']");
+        if (!totalForms) return; // Should not happen if correctly rendered
+        const prefix = totalForms.name.substring(0, totalForms.name.indexOf('-TOTAL_FORMS'));
+
+        const emptyFormTemplate = document.getElementById("empty-form").innerHTML;
+
+        // Render Existing
+        const existingRows = hiddenContainer.querySelectorAll(".form-row");
+        existingRows.forEach(row => {
+            const deleteInput = row.querySelector("input[name$='-DELETE']");
+            if (deleteInput && deleteInput.checked) return;
+
+            const captionInput = row.querySelector("input[name$='-caption']");
+            const orderInput = row.querySelector("input[name$='-order']");
+            const existingUrlSpan = row.querySelector(".existing-url");
+
+            const imageUrl = existingUrlSpan ? existingUrlSpan.dataset.url : null;
+            // If no image and no caption, probably an extra empty form
+            if (!imageUrl && !captionInput.value) return;
+
+            renderHeroCard(row, captionInput.value, orderInput.value, imageUrl);
+        });
+
+        // Add Logic
+        addBtn.addEventListener("click", function () {
+            const newFileInput = document.getElementById("new-image-input");
+            const newCaptionInput = document.getElementById("new-image-caption");
+            const newOrderInput = document.getElementById("new-image-order");
+
+            if (!newFileInput.files.length) {
+                alert("Please select an image file.");
+                return;
+            }
+
+            const file = newFileInput.files[0];
+            const previewUrl = URL.createObjectURL(file);
+            const formIdx = totalForms.value;
+
+            const newRowHtml = emptyFormTemplate.replace(/__prefix__/g, formIdx);
+            const newRow = document.createElement("div");
+            newRow.className = "form-row";
+            newRow.innerHTML = newRowHtml;
+            hiddenContainer.appendChild(newRow);
+
+            totalForms.setAttribute("value", parseInt(formIdx) + 1);
+
+            // Move File Input
+            const targetFileInput = newRow.querySelector("input[type='file']");
+            newFileInput.name = `${prefix}-${formIdx}-image`;
+            newFileInput.removeAttribute("id");
+            newFileInput.className = "";
+            // Replace
+            targetFileInput.parentNode.replaceChild(newFileInput, targetFileInput);
+
+            // Restore Fresh Input
+            const inputContainer = newFileInput.parentNode; // Wait, newFileInput is moved. Need ref to original container?
+            // Actually, newFileInput was at a specific place.
+            // Let's create a fresh one at the original location.
+            // In Project form we did: `const inputContainer = newFileInput.parentNode;` before moving.
+            // But here I didn't save parentNode above. 
+            // Correction:
+        });
+    });
+
+    // REDEFINING correctly to include the fix
+    document.addEventListener("DOMContentLoaded", function () {
+        const addBtn = document.getElementById("add-image-btn");
+        const visibleList = document.getElementById("visible-gallery-list");
+        const hiddenContainer = document.getElementById("form-forms");
+        const totalForms = document.querySelector("input[name$='-TOTAL_FORMS']");
+
+        if (!totalForms) return;
+        const prefix = totalForms.name.substring(0, totalForms.name.indexOf('-TOTAL_FORMS'));
+        const emptyFormTemplate = document.getElementById("empty-form").innerHTML;
+
+        // Render Existing
+        const existingRows = hiddenContainer.querySelectorAll(".form-row");
+        existingRows.forEach(row => {
+            const deleteInput = row.querySelector("input[name$='-DELETE']");
+            if (deleteInput && deleteInput.checked) return;
+
+            const captionInput = row.querySelector("input[name$='-caption']");
+            const orderInput = row.querySelector("input[name$='-order']");
+            const existingUrlSpan = row.querySelector(".existing-url");
+            const imageUrl = existingUrlSpan ? existingUrlSpan.dataset.url : null;
+
+            if (!imageUrl && (!captionInput || !captionInput.value)) return;
+
+            renderHeroCard(row, captionInput ? captionInput.value : "", orderInput ? orderInput.value : 0, imageUrl);
+        });
+
+        addBtn.addEventListener("click", function () {
+            const newFileInput = document.getElementById("new-image-input");
+            const newCaptionInput = document.getElementById("new-image-caption");
+            const newOrderInput = document.getElementById("new-image-order");
+            const inputContainer = newFileInput.parentNode; // Capture parent
+
+            if (!newFileInput.files.length) {
+                alert("Please select and image file.");
+                return;
+            }
+
+            const file = newFileInput.files[0];
+            const previewUrl = URL.createObjectURL(file);
+            const formIdx = totalForms.value;
+
+            const newRow = document.createElement("div");
+            newRow.className = "form-row";
+            newRow.innerHTML = emptyFormTemplate.replace(/__prefix__/g, formIdx);
+            hiddenContainer.appendChild(newRow);
+
+            totalForms.setAttribute("value", parseInt(formIdx) + 1);
+
+            // Handle File
+            const targetFileInput = newRow.querySelector("input[type='file']");
+            newFileInput.name = `${prefix}-${formIdx}-image`;
+            newFileInput.removeAttribute("id");
+            newFileInput.className = "";
+            targetFileInput.parentNode.replaceChild(newFileInput, targetFileInput);
+
+            // Restore Fresh
+            const freshInput = document.createElement("input");
+            freshInput.type = "file";
+            freshInput.id = "new-image-input";
+            freshInput.className = "w-full text-sm p-2 bg-white border rounded-lg";
+            freshInput.accept = "image/*";
+            inputContainer.appendChild(freshInput);
+
+            // Metadata
+            const targetCaption = newRow.querySelector("input[name$='-caption']");
+            if (targetCaption) targetCaption.value = newCaptionInput.value;
+
+            const targetOrder = newRow.querySelector("input[name$='-order']");
+            if (targetOrder) targetOrder.value = newOrderInput.value;
+
+            renderHeroCard(newRow, newCaptionInput.value, newOrderInput.value, previewUrl);
+
+            // Reset UI
+            newCaptionInput.value = "";
+            newOrderInput.value = "0";
+        });
+
+        function renderHeroCard(row, caption, order, imageUrl) {
+            const el = document.createElement("div");
+            el.className = "relative aspect-video rounded-xl overflow-hidden shadow-sm group bg-gray-200 border border-gray-300";
+            el.innerHTML = `
+                ${imageUrl
+                    ? `<img src="${imageUrl}" class="w-full h-full object-cover">`
+                    : `<div class="w-full h-full flex items-center justify-center text-gray-400">No Image</div>`
+                }
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
+                     <p class="text-white text-xs font-bold truncate">${caption || "No Caption"}</p>
+                     <p class="text-gray-300 text-[10px]">Order: ${order}</p>
+                </div>
+                <button type="button" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+             `;
+
+            el.querySelector("button").addEventListener("click", function () {
+                const deleteInput = row.querySelector("input[name$='-DELETE']");
+                if (deleteInput) {
+                    deleteInput.checked = true;
+                    el.remove();
+                } else {
+                    row.remove();
+                    el.remove();
+                }
+            });
+
+            visibleList.appendChild(el);
+        }
+    });
+</script>
+{% endblock %}
