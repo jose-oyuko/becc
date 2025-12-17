@@ -103,7 +103,7 @@ def pillars(request):
     for i, pillar in enumerate(db_pillars):
         pillars.append({
             "title": pillar.title,
-            "description": pillar.short_description or pillar.description,
+            "description": pillar.description or pillar.short_description,
             "activities": pillar.activities,
             "icon": pillar.icon,
             "gallery_images": pillar.gallery_images.all()[:4], # Limit to 4 images
@@ -158,9 +158,13 @@ def home(request):
             "category": "Water & Sanitation",
         },
     ]
+
+    partners = Partner.objects.all()
+
     context = {
         "pillars": pillars,
         "projects": formatted_projects,
+        "partners": partners,
     }
     return render(request, "public/home.html", context)
 
