@@ -1,21 +1,283 @@
-{% extends 'core/dashboard_base.html' %} {% block title %} Dashboard | BECC
-{%endblock %} {% block header %} Dashboard {% endblock %} {% block content %}
+{% extends 'core/dashboard_base.html' %}
+{% block title %}{{ title }} | BECC{% endblock %}
+{% block header %}{{ title }}{% endblock %}
+{% block content %}
 <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-2xl">
-  <h1 class="text-2xl font-bold text-green-700 mb-6">{{ title }}</h1>
   <form method="post" enctype="multipart/form-data" class="space-y-4">
-    {% csrf_token %} {{ form.as_p }}
-    <button
-      type="submit"
-      class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-    >
+    {% csrf_token %}
+
+    <!-- Basic Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        {{ form.title.label_tag }}
+        {{ form.title }}
+      </div>
+      <div>
+        {{ form.pillar.label_tag }}
+        {{ form.pillar }}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        {{ form.start_date.label_tag }}
+        {{ form.start_date }}
+      </div>
+      <div>
+        {{ form.end_date.label_tag }}
+        {{ form.end_date }}
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        {{ form.status.label_tag }}
+        {{ form.status }}
+      </div>
+      <div>
+        {{ form.location.label_tag }}
+        {{ form.location }}
+      </div>
+    </div>
+
+    {{ form.short_description.label_tag }}
+    {{ form.short_description }}
+
+    {{ form.description.label_tag }}
+    {{ form.description }}
+
+    <label class="block font-semibold mb-1">Main Image</label>
+    {% if form.instance.image %}
+    <div id="image-preview-container" class="relative inline-block mb-2 group">
+      <img src="{{ form.instance.image.url }}" alt="Current Image" class="h-24 w-24 object-cover rounded-lg border">
+      <button type="button" id="delete-image-btn"
+        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-red-600 focus:outline-none">
+        &times;
+      </button>
+    </div>
+    <input type="checkbox" name="image-clear" id="image-clear_id" class="hidden">
+    {% endif %}
+
+    {{ form.image }}
+
+    <!-- Script to handle main image deletion -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const deleteBtn = document.getElementById("delete-image-btn");
+        const previewContainer = document.getElementById("image-preview-container");
+        const clearCheckbox = document.getElementById("image-clear_id");
+
+        if (deleteBtn) {
+          deleteBtn.addEventListener("click", function () {
+            if (clearCheckbox) clearCheckbox.checked = true;
+            previewContainer.style.display = 'none';
+          });
+        }
+      });
+    </script>
+
+    <!-- Custom Impact UI (Similar to Activities) -->
+    <label class="block font-semibold mt-4">Project Impact</label>
+    <div class="flex gap-2">
+      <input id="impact-input" type="text" placeholder="Add impact point..." class="flex-1 p-2 border rounded-lg" />
+      <button type="button" id="add-impact-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        Add
+      </button>
+    </div>
+    <div id="impact-container" class="mt-3 flex flex-wrap gap-2"></div>
+    <!-- Hidden JSON Field -->
+    {{ form.impact_json }}
+
+
+    <!-- Custom Gallery UI (Shared Logic with Pillars) -->
+    <div class="mt-8 pt-6 border-t">
+      <h3 class="font-semibold text-lg mb-4 text-green-900">Project Gallery (Optional)</h3>
+
+      <!-- Input Row -->
+      <div class="flex flex-col gap-3 mb-4 p-4 bg-gray-50 rounded-lg border">
+        <label class="font-medium text-sm">Add New Photo</label>
+        <div class="flex gap-2 items-start">
+          <div class="w-1/3">
+            <input type="file" id="new-image-input" class="w-full text-sm p-2 bg-white border rounded-lg"
+              accept="image/*">
+          </div>
+          <div class="w-2/3 flex flex-col gap-2">
+            <input type="text" id="new-image-title" placeholder="Image Title"
+              class="w-full text-sm p-2 bg-white border rounded-lg font-medium">
+            <textarea id="new-image-desc" placeholder="Short description..."
+              class="w-full text-sm p-2 bg-white border rounded-lg" rows="2"></textarea>
+          </div>
+        </div>
+        <button type="button" id="add-image-btn"
+          class="self-end bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm mt-2">
+          Add Photo
+        </button>
+      </div>
+
+      <!-- Visible Grid -->
+      <div id="visible-gallery-list" class="grid grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+      <!-- Hidden Management Formset -->
+      <div id="hidden-formset-container" class="hidden">
+        {{ formset.management_form }}
+        <div id="form-forms">
+          {% for form in formset %}
+          <div class="form-row" data-id="{{ forloop.counter0 }}">
+            {{ form.id }}
+            {{ form.DELETE }}
+            <div class="original-fields">
+              {{ form.title }}
+              {{ form.description }}
+              {{ form.image }}
+              {% if form.instance.pk and form.instance.image %}
+              <span data-url="{{ form.instance.image.url }}" class="existing-url"></span>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div id="empty-form" class="hidden">
+          {{ formset.empty_form.as_p }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery Logic (Reusable logic inline for safety) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const addBtn = document.getElementById("add-image-btn");
+        const visibleList = document.getElementById("visible-gallery-list");
+        const hiddenContainer = document.getElementById("form-forms");
+
+        // Dynamically find the management form input for TOTAL_FORMS
+        const totalForms = document.querySelector("input[name$='-TOTAL_FORMS']");
+
+        if (!totalForms) {
+          console.error("Management form TOTAL_FORMS input not found!");
+          return;
+        }
+
+        // Extract prefix (e.g. 'gallery_set' from 'gallery_set-TOTAL_FORMS')
+        const prefix = totalForms.name.substring(0, totalForms.name.indexOf('-TOTAL_FORMS'));
+        const emptyFormTemplate = document.getElementById("empty-form").innerHTML;
+
+        // Render existing
+        const existingRows = hiddenContainer.querySelectorAll(".form-row");
+        existingRows.forEach(row => {
+          const deleteInput = row.querySelector("input[name$='-DELETE']");
+          if (deleteInput && deleteInput.checked) return;
+
+          const titleInput = row.querySelector("input[name$='-title']");
+          const descInput = row.querySelector("textarea[name$='-description']");
+          const existingUrlSpan = row.querySelector(".existing-url");
+
+          const imageUrl = existingUrlSpan ? existingUrlSpan.dataset.url : null;
+          if (!imageUrl && !titleInput.value) return;
+
+          renderCardItem(row, titleInput.value || "Untitled", descInput ? descInput.value : "", imageUrl);
+        });
+
+        // Add Logic
+        addBtn.addEventListener("click", function () {
+          const newFileInput = document.getElementById("new-image-input");
+          const newTitleInput = document.getElementById("new-image-title");
+          const newDescInput = document.getElementById("new-image-desc");
+
+          if (!newFileInput.files.length) {
+            alert("Please select an image file.");
+            return;
+          }
+
+          const file = newFileInput.files[0];
+          const previewUrl = URL.createObjectURL(file);
+          const formIdx = totalForms.value;
+
+          // ROBUST FIX: Capture container first
+          const inputContainer = newFileInput.parentNode;
+
+          const newRowHtml = emptyFormTemplate.replace(/__prefix__/g, formIdx);
+          const newRow = document.createElement("div");
+          newRow.className = "form-row";
+          newRow.innerHTML = newRowHtml;
+          hiddenContainer.appendChild(newRow);
+
+          totalForms.setAttribute("value", parseInt(formIdx) + 1);
+
+          // Transfer File Input
+          const targetFileInput = newRow.querySelector("input[type='file']");
+          // Use dynamic prefix here
+          newFileInput.name = `${prefix}-${formIdx}-image`;
+          newFileInput.removeAttribute("id");
+          newFileInput.className = "";
+          targetFileInput.parentNode.replaceChild(newFileInput, targetFileInput);
+
+          // Restore fresh input
+          const freshInput = document.createElement("input");
+          freshInput.type = "file";
+          freshInput.id = "new-image-input";
+          freshInput.className = "w-full text-sm p-2 bg-white border rounded-lg";
+          freshInput.accept = "image/*";
+          inputContainer.appendChild(freshInput);
+
+          // Metadata
+          const targetTitle = newRow.querySelector("input[name$='-title']");
+          const finalTitle = newTitleInput.value.trim() || "Untitled";
+          if (targetTitle) targetTitle.value = finalTitle;
+
+          const targetDesc = newRow.querySelector("textarea[name$='-description']");
+          const newDescVal = newDescInput ? newDescInput.value : "";
+          if (targetDesc) {
+            targetDesc.value = newDescVal;
+          } else {
+            const fallbackDesc = newRow.querySelector("input[name$='-description']");
+            if (fallbackDesc) fallbackDesc.value = newDescVal;
+          }
+
+          renderCardItem(newRow, finalTitle, newDescVal, previewUrl);
+          newTitleInput.value = "";
+          newDescInput.value = "";
+        });
+
+        function renderCardItem(row, title, desc, imageUrl) {
+          const el = document.createElement("div");
+          el.className = "relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm group bg-gray-200 border border-gray-300";
+          el.innerHTML = `
+                ${imageUrl
+              ? `<img src="${imageUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">`
+              : `<div class="w-full h-full flex items-center justify-center text-gray-400"><span class="text-xs">No Image</span></div>`
+            }
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-3">
+                    ${desc ? `<p class="text-white text-xs font-medium line-clamp-2">${desc}</p>` : ''}
+                </div>
+                <button type="button" class="absolute top-2 right-2 bg-red-500/80 hover:bg-red-600 text-white rounded-full p-1 shadow-sm transition-colors z-10">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            `;
+          el.querySelector("button").addEventListener("click", function () {
+            const deleteInput = row.querySelector("input[name$='-DELETE']");
+            if (deleteInput) {
+              deleteInput.checked = true;
+              el.remove();
+            } else {
+              row.remove();
+              el.remove();
+            }
+          });
+          visibleList.appendChild(el);
+        }
+      });
+    </script>
+
+    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
       Save
     </button>
-    <a
-      href="{% url 'project_list' %}"
-      class="ml-2 text-gray-600 hover:underline"
-      >Cancel</a
-    >
+    <a href="{% url 'project_list' %}" class="ml-2 text-gray-600 hover:underline">Cancel</a>
+
+    {% load static %}
+    <!-- Reusing Impact JS -->
+    <script src="{% static 'js/impact.js' %}"></script>
   </form>
 </div>
-
 {% endblock %}

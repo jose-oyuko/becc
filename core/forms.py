@@ -29,25 +29,26 @@ class PartnerForm(forms.ModelForm):
 
 
 class ProjectForm(forms.ModelForm):
-    impact = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'class': 'w-full p-2 border rounded-lg',
-            'rows': 4,
-            'placeholder': 'Enter one impact per line'
-        }),
-        required=False
-    )
+    # Hidden field that will store JSON impact list
+    impact_json = forms.CharField(required=False, widget=forms.HiddenInput())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk and self.instance.impact:
+            # Impact is already a list (ArrayField), so just dump it
+            self.fields['impact_json'].initial = json.dumps(self.instance.impact)
 
     class Meta:
         model = Project
         fields = [
-            'title', 'pillar', 'description', 'location',
-            'start_date', 'end_date', 'status', 'image', 'impact'
+            'title', 'pillar', 'short_description', 'description', 'location',
+            'start_date', 'end_date', 'status', 'image', 'impact_json'
         ]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
             'pillar': forms.Select(attrs={'class': 'w-full p-2 border rounded-lg'}),
-            'description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 3}),
+            'short_description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 2}),
+            'description': forms.Textarea(attrs={'class': 'w-full p-2 border rounded-lg', 'rows': 4}),
             'location': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg'}),
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'w-full p-2 border rounded-lg'}),
             'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'w-full p-2 border rounded-lg'}),
@@ -55,20 +56,29 @@ class ProjectForm(forms.ModelForm):
             'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
         }
 
-    def clean_impact(self):
-        """Convert textarea input into list for the ArrayField."""
-        impact_text = self.cleaned_data.get("impact", "")
-        if not impact_text.strip():
-            return []  # Empty list if user left blank
+    def clean(self):
+        cleaned = super().clean()
+        
+        # Parse JSON stored in hidden field
+        impact_raw = cleaned.get("impact_json", "[]")
+        
+        try:
+            cleaned["impact"] = json.loads(impact_raw)
+        except json.JSONDecodeError:
+            self.add_error("impact_json", "Invalid impact format.")
+            cleaned["impact"] = []
+        
+        return cleaned
 
-        # Split by new line, remove empties, strip spaces
-        return [line.strip() for line in impact_text.split("\n") if line.strip()]
-
-    def initial_impact(self):
-        """Convert list → newline text for initial display."""
-        if self.instance and self.instance.impact:
-            return "\n".join(self.instance.impact)
-        return ""
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Manually assign impact from cleaned_data
+        if "impact" in self.cleaned_data:
+            instance.impact = self.cleaned_data["impact"]
+        
+        if commit:
+            instance.save()
+        return instance
 
 
 class PillarForm(forms.ModelForm):
@@ -152,6 +162,18 @@ PillarGalleryFormSet = inlineformset_factory(
     widgets = {
         'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'Image Title'}),
         'description': forms.Textarea(attrs={'class': 'hidden', 'rows': 2, 'placeholder': 'Short description'}), # Hidden because we handle it via JS ui? Or expose it? User said "small description attached". Let's expose it in JS UI, store in hidden or normal input.
+        'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
+    },
+    extra=1,
+    can_delete=True
+)
+
+ProjectGalleryFormSet = inlineformset_factory(
+    Project, Gallery, 
+    fields=['image', 'title', 'description'],
+    widgets = {
+        'title': forms.TextInput(attrs={'class': 'w-full p-2 border rounded-lg', 'placeholder': 'Image Title'}),
+        'description': forms.Textarea(attrs={'class': 'hidden', 'rows': 2, 'placeholder': 'Short description'}),
         'image': forms.ClearableFileInput(attrs={'class': 'w-full'}),
     },
     extra=1,

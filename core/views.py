@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, Event, Partner, VolunteerApplication, Donation, Pillar, Gallery, ContactMessage
 from django.db import models
 from django.contrib import messages
-from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm, PillarGalleryFormSet
+from .forms import ProjectForm, PillarForm, EventForm, PartnerForm, GalleryForm, PillarGalleryFormSet, ProjectGalleryFormSet
 from django.urls import reverse, reverse_lazy
 from datetime import datetime
 from django.core.mail import send_mail
@@ -23,7 +23,7 @@ class CustomLogoutView(LogoutView):
     next_page = reverse_lazy("login")
 
 def projects(request):
-    projects = Project.objects.all().select_related('pillar')
+    projects = Project.objects.all().select_related('pillar').prefetch_related('gallery_set')
 
     formatted_projects = [
         {
@@ -33,6 +33,7 @@ def projects(request):
             "description": p.description,
             "impact": p.impact,  # Already a list!
             "status": p.get_status_display(),
+            "gallery": p.gallery_set.all(),
         }
         for p in projects
     ]
@@ -144,7 +145,7 @@ def home(request):
             "title": p.title,
             "category": p.pillar.title if p.pillar else "Uncategorized",
             "image": p.image.url if p.image else "/static/images/placeholder.jpg",
-            "description": p.description,
+            "description": p.short_description or p.description,
         }
         for p in projects
     ]
@@ -427,26 +428,40 @@ def project_list(request):
 def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        formset = ProjectGalleryFormSet(request.POST, request.FILES)
+        if form.is_valid() and formset.is_valid():
+            project = form.save()
+            
+            # Save Gallery Images
+            images = formset.save(commit=False)
+            for image in images:
+                image.related_project = project
+                image.save()
+            for obj in formset.deleted_objects:
+                obj.delete()
+
             messages.success(request, "Project added successfully!")
             return redirect('project_list')
     else:
         form = ProjectForm()
-    return render(request, 'core/project_form.html', {'form': form, 'title': 'Add Project'})
+        formset = ProjectGalleryFormSet()
+    return render(request, 'core/project_form.html', {'form': form, 'formset': formset, 'title': 'Add Project'})
 
 @login_required
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES, instance=project)
-        if form.is_valid():
+        formset = ProjectGalleryFormSet(request.POST, request.FILES, instance=project)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             messages.success(request, "Project updated successfully!")
             return redirect('project_list')
     else:
         form = ProjectForm(instance=project)
-    return render(request, 'core/project_form.html', {'form': form, 'title': 'Edit Project'})
+        formset = ProjectGalleryFormSet(instance=project)
+    return render(request, 'core/project_form.html', {'form': form, 'formset': formset, 'title': 'Edit Project'})
 
 @login_required
 def project_delete(request, pk):

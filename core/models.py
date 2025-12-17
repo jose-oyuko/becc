@@ -73,6 +73,7 @@ class Project(models.Model):
 
     title = models.CharField(max_length=255)
     pillar = models.ForeignKey(Pillar, on_delete=models.CASCADE, related_name='projects')
+    short_description = models.TextField(blank=True, help_text="A short summary for list views.")
     description = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
