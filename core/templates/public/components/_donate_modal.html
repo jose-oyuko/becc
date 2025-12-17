@@ -54,14 +54,14 @@
                                             class="flex justify-between items-center bg-white p-3 rounded-lg border border-green-100/50 shadow-sm">
                                             <span class="text-gray-600 font-medium">Business Number</span>
                                             <span
-                                                class="font-mono font-bold text-gray-900 text-lg bg-gray-50 px-2 py-1 rounded">4001879</span>
+                                                class="font-mono font-bold text-gray-900 text-lg bg-gray-50 px-2 py-1 rounded">{{ org_info.paybill_no|default:"4001879" }}</span>
                                         </div>
 
                                         <div
                                             class="flex justify-between items-center bg-white p-3 rounded-lg border border-green-100/50 shadow-sm">
                                             <span class="text-gray-600 font-medium">Account Number</span>
                                             <span
-                                                class="font-bold text-gray-900 text-lg bg-gray-50 px-2 py-1 rounded">Brightstar</span>
+                                                class="font-bold text-gray-900 text-lg bg-gray-50 px-2 py-1 rounded">{{ org_info.account_no|default:"Brightstar" }}</span>
                                         </div>
                                     </div>
                                 </div>

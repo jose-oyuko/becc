@@ -4,19 +4,20 @@
       <!-- Logo and About -->
       <div>
         <a href="/" class="flex items-center gap-2 mb-4">
-          <div
-            class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center"
-          >
+          <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center overflow-hidden">
+            {% if org_info.logo %}
+            <img src="{{ org_info.logo.url }}" class="w-full h-full object-cover">
+            {% else %}
             <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+            {% endif %}
           </div>
           <div>
-            <span class="text-xl font-bold text-white">BECC</span>
-            <p class="text-xs text-white/80">Mazingira Bora</p>
+            <span class="text-xl font-bold text-white">{{ org_info.name|default:"BECC" }}</span>
+            <p class="text-xs text-white/80">{{ org_info.slogan|default:"Mazingira Bora" }}</p>
           </div>
         </a>
         <p class="text-sm text-white/80 leading-relaxed">
-          Centre of excellence promoting sustainable environmental conservation through
-          practice and knowledge sharing.
+          {{ org_info.footer_text|default:"Centre of excellence promoting sustainable environmental conservation through practice and knowledge sharing." }}
         </p>
       </div>
 
@@ -24,10 +25,14 @@
       <div>
         <h3 class="font-bold mb-4 text-white">Quick Links</h3>
         <ul class="space-y-2">
-          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">About Us</a></li>
-          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Our Pillars</a></li>
-          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Projects</a></li>
-          <li><a href="#" class="text-sm text-white/80 hover:text-white transition-colors">Gallery</a></li>
+          <li><a href="{% url 'about' %}" class="text-sm text-white/80 hover:text-white transition-colors">About Us</a>
+          </li>
+          <li><a href="{% url 'pillars' %}" class="text-sm text-white/80 hover:text-white transition-colors">Our
+              Pillars</a></li>
+          <li><a href="{% url 'projects' %}"
+              class="text-sm text-white/80 hover:text-white transition-colors">Projects</a></li>
+          <li><a href="{% url 'gallery' %}" class="text-sm text-white/80 hover:text-white transition-colors">Gallery</a>
+          </li>
         </ul>
       </div>
 
@@ -37,21 +42,19 @@
         <ul class="space-y-3">
           <li class="flex items-start gap-2 text-sm text-white/80">
             <i data-lucide="map-pin" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
-            <span>BECC Eco Centre, Kakamega-Webuye Road, Kenya</span>
+            <span class="whitespace-pre-line">{{ org_info.address|default:"BECC Eco Centre, Kakamega-Webuye Road, Kenya" }}</span>
           </li>
           <li class="flex items-center gap-2 text-sm text-white/80">
             <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
-            <a href="tel:+254724390717" class="hover:text-white transition-colors">
-              +254 724 390 717
+            <a href="tel:{{ org_info.phone|default:'+254724390717' }}" class="hover:text-white transition-colors">
+              {{ org_info.phone|default:'+254 724 390 717' }}
             </a>
           </li>
           <li class="flex items-center gap-2 text-sm text-white/80">
             <i data-lucide="mail" class="w-4 h-4 flex-shrink-0"></i>
-            <a
-              href="mailto:info@brightstarecc.org"
-              class="hover:text-white transition-colors break-all"
-            >
-              info@brightstarecc.org
+            <a href="mailto:{{ org_info.contact_email|default:'info@brightstarecc.org' }}"
+              class="hover:text-white transition-colors break-all">
+              {{ org_info.contact_email|default:'info@brightstarecc.org' }}
             </a>
           </li>
         </ul>
@@ -61,18 +64,33 @@
       <div>
         <h3 class="font-bold mb-4 text-white">Follow Us</h3>
         <div class="flex gap-3 mb-6">
-          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+          {% if org_info.facebook %}
+          <a href="{{ org_info.facebook }}" target="_blank"
+            class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
             <i data-lucide="facebook" class="w-5 h-5 text-white"></i>
           </a>
-          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+          {% endif %}
+
+          {% if org_info.x %}
+          <a href="{{ org_info.x }}" target="_blank"
+            class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
             <i data-lucide="twitter" class="w-5 h-5 text-white"></i>
           </a>
-          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+          {% endif %}
+
+          {% if org_info.instagram %}
+          <a href="{{ org_info.instagram }}" target="_blank"
+            class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
             <i data-lucide="instagram" class="w-5 h-5 text-white"></i>
           </a>
-          <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
-            <i data-lucide="linkedin" class="w-5 h-5 text-white"></i>
+          {% endif %}
+
+          {% if org_info.youtube %}
+          <a href="{{ org_info.youtube }}" target="_blank"
+            class="w-10 h-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center transition-colors">
+            <i data-lucide="youtube" class="w-5 h-5 text-white"></i>
           </a>
+          {% endif %}
         </div>
         <p class="text-sm text-white/80">
           Join our community and stay updated on our conservation initiatives.
@@ -83,7 +101,8 @@
     <!-- Copyright -->
     <div class="border-t border-white/20 pt-8 text-center">
       <p class="text-sm text-white/80">
-        © <script>document.write(new Date().getFullYear());</script>
+        ©
+        <script>document.write(new Date().getFullYear());</script>
         Brightstar Environmental Conservation Centre. All rights reserved.
       </p>
     </div>

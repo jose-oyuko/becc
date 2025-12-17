@@ -1,59 +1,55 @@
 {% load static %}
-<nav
-  x-data="{ isScrolled: false, isMobileMenuOpen: false }"
-  x-init="
+<nav x-data="{ isScrolled: false, isMobileMenuOpen: false }" x-init="
     window.addEventListener('scroll', () => {
       isScrolled = window.scrollY > 20;
     });
-  "
-  :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'"
-  class="fixed top-0 w-full z-50 transition-all duration-300"
->
+  " :class="isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'"
+  class="fixed top-0 w-full z-50 transition-all duration-300">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 group">
         <div
-          class="w-12 h-12 bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
-        >
-          <img
-    src="{% static 'images/logo_small.jpg' %}"
-    alt="BECC Logo"
-    class="w-12 h-12 object-contain rounded-full shadow-md transition-transform group-hover:scale-110"
-  />
+          class="w-12 h-12 bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform overflow-hidden">
+          {% if org_info.logo %}
+          <img src="{{ org_info.logo.url }}" alt="Logo" class="w-full h-full object-cover">
+          {% else %}
+          <img src="{% static 'images/logo_small.jpg' %}" alt="BECC Logo"
+            class="w-12 h-12 object-contain rounded-full shadow-md transition-transform group-hover:scale-110" />
+          {% endif %}
         </div>
         <div class="hidden sm:block">
-          <span class="text-xl font-bold text-gray-900">BECC</span>
-          <p class="text-xs text-gray-500">Mazingira Bora</p>
+          <span class="text-xl font-bold text-gray-900">{{ org_info.name|default:"BECC" }}</span>
+          <p class="text-xs text-gray-500">{{ org_info.slogan|default:"Mazingira Bora" }}</p>
         </div>
       </a>
 
       <!-- Desktop Nav Links -->
       <div class="hidden lg:flex items-center gap-8">
         <a href="/" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Home</a>
-        <a href="{% url 'about' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
-        <a href="{% url 'pillars' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
-        <a href="{% url 'projects' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
-        <a href="{% url 'gallery' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
-        <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
+        <a href="{% url 'about' %}"
+          class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
+        <a href="{% url 'pillars' %}"
+          class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
+        <a href="{% url 'projects' %}"
+          class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
+        <a href="{% url 'gallery' %}"
+          class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
+        <a href="{% url 'contact' %}"
+          class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
       </div>
 
       <!-- Desktop CTA Button -->
       <div class="hidden lg:block">
         <!-- url for contact -->
-        <a
-          href="{% url 'contact' %}"
-          class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white px-6 py-2 rounded-full font-medium shadow-md hover:opacity-90 transition-all"
-        >
+        <a href="{% url 'contact' %}"
+          class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white px-6 py-2 rounded-full font-medium shadow-md hover:opacity-90 transition-all">
           Get Involved
         </a>
       </div>
 
       <!-- Mobile Toggle -->
-      <button
-        @click="isMobileMenuOpen = !isMobileMenuOpen"
-        class="lg:hidden p-2 text-gray-700"
-      >
+      <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="lg:hidden p-2 text-gray-700">
         <template x-if="!isMobileMenuOpen">
           <i data-lucide='menu' class="w-6 h-6"></i>
         </template>
@@ -65,25 +61,24 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div
-  x-show="isMobileMenuOpen"
-  x-transition
-  x-cloak
-  class="lg:hidden bg-white/98 backdrop-blur-md border-t border-gray-200"
->
+  <div x-show="isMobileMenuOpen" x-transition x-cloak
+    class="lg:hidden bg-white/98 backdrop-blur-md border-t border-gray-200">
 
     <div class="container mx-auto px-4 py-4 flex flex-col gap-4">
       <a href="/" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Home</a>
-      <a href="{% url 'about' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
-      <a href="{% url 'pillars' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
-      <a href="{% url 'projects' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
-      <a href="{% url 'gallery' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
-      <a href="{% url 'contact' %}" class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
-<!-- url for contact -->
-      <a
-        href="{% url 'contact' %}"
-        class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white px-6 py-3 rounded-full text-center font-medium shadow-md hover:opacity-90 transition-all"
-      >
+      <a href="{% url 'about' %}"
+        class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">About</a>
+      <a href="{% url 'pillars' %}"
+        class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Pillars</a>
+      <a href="{% url 'projects' %}"
+        class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Projects</a>
+      <a href="{% url 'gallery' %}"
+        class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Gallery</a>
+      <a href="{% url 'contact' %}"
+        class="text-sm font-medium text-gray-800 hover:text-green-700 transition-colors">Contact</a>
+      <!-- url for contact -->
+      <a href="{% url 'contact' %}"
+        class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 text-white px-6 py-3 rounded-full text-center font-medium shadow-md hover:opacity-90 transition-all">
         Get Involved
       </a>
     </div>

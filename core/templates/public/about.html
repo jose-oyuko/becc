@@ -2,159 +2,112 @@
 {% load static %}
 
 {% block content %}
-  {% include 'public/includes/_navbar.html' %}
+{% include 'public/includes/_navbar.html' %}
 
-  <!-- Hero Section -->
-  <section class="pt-32 pb-20 bg-gradient-to-br from-green-800 via-green-700 to-green-500 relative overflow-hidden">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center animate-fade-in">
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-          About BECC
-        </h1>
-        <p class="text-xl text-white/90 leading-relaxed">
-          Brightstar Environmental Conservation Centre is dedicated to creating sustainable
-          ecosystems through community-driven conservation initiatives.
-        </p>
-      </div>
+<!-- Hero Section -->
+<section class="pt-32 pb-20 bg-gradient-to-br from-green-800 via-green-700 to-green-500 relative overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto text-center animate-fade-in">
+      <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
+        About {{ org_info.name|default:"BECC" }}
+      </h1>
+      <p class="text-xl text-white/90 leading-relaxed">
+        {{ org_info.about|default:"Brightstar Environmental Conservation Centre is dedicated to creating sustainable
+        ecosystems through community-driven conservation initiatives." }}
+      </p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Background Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <!-- Background Text -->
-        <div class="prose prose-lg max-w-none mb-16 animate-fade-in">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Background</h2>
-          <p class="text-gray-600 leading-relaxed mb-6">
-            Brightstar Environmental Conservation Centre is registered by the Registrar of
-            Companies in Kenya as a company limited by guarantee. We are committed to promoting
-            sustainable environmental conservation across diverse ecosystems in Kenya and beyond.
-          </p>
-          <p class="text-gray-600 leading-relaxed">
-            Through practice and knowledge sharing, we work towards clean air, biodiversity
-            preservation, and sustainable land use management. Our approach integrates
-            traditional wisdom with modern sustainable technologies to create lasting impact.
-          </p>
+<!-- Background Section -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Background Text -->
+      <div class="prose prose-lg max-w-none mb-16 animate-fade-in">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Background</h2>
+        <div class="text-gray-600 leading-relaxed mb-6 whitespace-pre-line">
+          {{ org_info.about_background|default:"Information coming soon." }}
+        </div>
+      </div>
+
+      <!-- 3 Highlight Cards -->
+      <div class="grid md:grid-cols-3 gap-8 mb-16">
+        <!-- Goal -->
+        <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in">
+          <div
+            class="w-16 h-16 bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <!-- Target Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M12 7v5l3 3" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our Goal</h3>
+          <p class="text-gray-600">{{ org_info.goal|default:"Self-sustaining ecosystems that benefit all communities."
+            }}</p>
         </div>
 
-        <!-- 3 Highlight Cards -->
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
-          <!-- Goal -->
-          <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in">
-            <div class="w-16 h-16 bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <!-- Target Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M12 7v5l3 3" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Our Goal</h3>
-            <p class="text-gray-600">Self-sustaining ecosystems that benefit all communities.</p>
+        <!-- Motto -->
+        <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in"
+          style="animation-delay: 100ms;">
+          <div
+            class="w-16 h-16 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <!-- Users Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 0 1 3-3.87M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8z" />
+            </svg>
           </div>
-
-          <!-- Motto -->
-          <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in" style="animation-delay: 100ms;">
-            <div class="w-16 h-16 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <!-- Users Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 0 1 3-3.87M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Our Motto</h3>
-            <p class="text-gray-600">Inclusive Environmental Conservation.</p>
-          </div>
-
-          <!-- Slogan -->
-          <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in" style="animation-delay: 200ms;">
-            <div class="w-16 h-16 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <!-- Globe Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 0a15 15 0 0 1 0 20" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Our Slogan</h3>
-            <p class="text-gray-600">"Mazingira Bora" – Better Environment.</p>
-          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our Motto</h3>
+          <p class="text-gray-600">{{ org_info.motto|default:"Inclusive Environmental Conservation." }}</p>
         </div>
 
-        <!-- Core Values Section -->
-        <div class="animate-fade-in">
-          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Core Values</h2>
+        <!-- Slogan -->
+        <div class="p-8 text-center rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 animate-scale-in"
+          style="animation-delay: 200ms;">
+          <div
+            class="w-16 h-16 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <!-- Globe Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 0a15 15 0 0 1 0 20" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Our Slogan</h3>
+          <p class="text-gray-600">{{ org_info.slogan|default:'"Mazingira Bora" – Better Environment.' }}</p>
+        </div>
+      </div>
 
-          <div class="space-y-4">
-            <!-- Core Value Items -->
-            <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7" />
-              </svg>
-              <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Cooperation</h3>
-                <p class="text-gray-600">
-                  Working together with stakeholders and clients to achieve common environmental goals.
-                </p>
-              </div>
-            </div>
+      <!-- Core Values Section -->
+      <div class="animate-fade-in">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Core Values</h2>
 
-            <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7" />
-              </svg>
-              <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Inclusivity</h3>
-                <p class="text-gray-600">
-                  Putting ecosystem interests at heart and ensuring all communities benefit.
-                </p>
-              </div>
-            </div>
-
-            <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7" />
-              </svg>
-              <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Holistic Approaches</h3>
-                <p class="text-gray-600">
-                  Taking a broad view to address environmental challenges comprehensively.
-                </p>
-              </div>
-            </div>
-
-            <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7" />
-              </svg>
-              <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Circularity & Regeneration</h3>
-                <p class="text-gray-600">
-                  Eliminating wastage through sustainable and regenerative practices.
-                </p>
-              </div>
-            </div>
-
-            <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 13l4 4L19 7" />
-              </svg>
-              <div>
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Sustainable Technologies</h3>
-                <p class="text-gray-600">
-                  Implementing solutions that benefit current and future generations.
-                </p>
-              </div>
+        <div class="space-y-4">
+          {% for value in org_info.core_values %}
+          <div class="p-6 flex items-start gap-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 mb-2">{{ value.title }}</h3>
+              <p class="text-gray-600">
+                {{ value.description }}
+              </p>
             </div>
           </div>
+          {% empty %}
+          <p class="text-center text-gray-500">Core values to be updated soon.</p>
+          {% endfor %}
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  
+
 {% endblock %}

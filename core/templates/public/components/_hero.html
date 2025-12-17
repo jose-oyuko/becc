@@ -1,11 +1,25 @@
 {% load static %}
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-  <!-- Background Image + Gradient Overlay -->
-  <div
-    class="absolute inset-0 bg-cover bg-center"
-    style="background-image: url('{% static "images/hero-landscape.jpg" %}');"
-  >
-    <div class="absolute inset-0 bg-gradient-to-br from-green-800/90 via-green-700/70 to-green-500/60"></div>
+  <!-- Background Slider -->
+  <div class="absolute inset-0 z-0" x-data="{ activeSlide: 0, slides: {{ org_info.hero_images.count|default:0 }} }"
+    x-init="if(slides > 1) setInterval(() => { activeSlide = (activeSlide + 1) % slides }, 5000)">
+
+    {% if org_info.hero_images.exists %}
+    {% for slide in org_info.hero_images.all %}
+    <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+      x-show="activeSlide === {{ forloop.counter0 }}" x-transition:enter="opacity-0"
+      x-transition:enter-end="opacity-100" x-transition:leave="opacity-100" x-transition:leave-end="opacity-0">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ slide.image.url }}');"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-green-900/90 via-green-800/80 to-green-600/60"></div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <!-- Default Static Fallback -->
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static "
+      images/hero-landscape.jpg" %}');">
+      <div class="absolute inset-0 bg-gradient-to-br from-green-800/90 via-green-700/70 to-green-500/60"></div>
+    </div>
+    {% endif %}
   </div>
 
   <!-- Hero Content -->
@@ -13,22 +27,23 @@
     <div class="max-w-4xl mx-auto text-center animate-fade-in">
       <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6">
         <i data-lucide="tree-pine" class="w-5 h-5 text-white"></i>
-        <span class="text-sm font-medium text-white">Inclusive Environmental Conservation</span>
+        <span class="text-sm font-medium text-white">{{ org_info.slogan|default:"Inclusive Environmental Conservation" }}</span>
       </div>
 
       <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-        Brightstar Environmental
-        <br />
-        <span class="text-lime-300">Conservation Centre</span>
+        {% if org_info.hero_title %}
+        {{ org_info.hero_title|linebreaksbr }}
+        {% else %}
+        Brightstar Environmental <br /> <span class="text-lime-300">Conservation Centre</span>
+        {% endif %}
       </h1>
 
       <p class="text-xl md:text-2xl text-white/90 mb-4 font-medium">
-        Mazingira Bora — Better Environment
+        {{ org_info.motto|default:"Mazingira Bora — Better Environment" }}
       </p>
 
       <p class="text-lg md:text-xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
-        Environmental conservation through practice and knowledge sharing for clean air,
-        biodiversity, and sustainable land use management in diverse ecosystems.
+        {{ org_info.hero_subtitle|default:"Environmental conservation through practice and knowledge sharing for clean air, biodiversity, and sustainable land use management in diverse ecosystems." }}
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
