@@ -27,6 +27,7 @@ def projects(request):
 
     formatted_projects = [
         {
+            "id": p.id,
             "title": p.title,
             "category": p.pillar.title if p.pillar else "Uncategorized",
             "image": p.image.url if p.image else "/static/images/placeholder.jpg",
@@ -44,15 +45,23 @@ def projects(request):
 
 
 def gallery(request):
-    gallery_images = [
-        {"src": "images/hero-landscape.jpg", "title": "African Landscape Conservation", "category": "Nature"},
-        {"src": "images/community-planting.jpg", "title": "Community Tree Planting", "category": "Community"},
-        {"src": "images/soil-seedling.jpg", "title": "Sustainable Agriculture", "category": "Agriculture"},
-        {"src": "images/water-conservation.jpg", "title": "Water Conservation Project", "category": "Water"},
-        {"src": "images/community-planting.jpg", "title": "Environmental Education", "category": "Education"},
-        {"src": "images/water-conservation.jpg", "title": "Spring Protection Initiative", "category": "Water"},
-    ]
-    return render(request, "public/gallery.html", {"gallery_images": gallery_images})
+    project_id = request.GET.get('project')
+    page_title = "Gallery"
+    page_description = "Visual stories of our environmental conservation work and community impact."
+    
+    if project_id:
+        project = get_object_or_404(Project, pk=project_id)
+        gallery_images = Gallery.objects.filter(related_project=project).order_by('-uploaded_at')
+        page_title = f"{project.title}"
+        page_description = f"Gallery photos for {project.title}"
+    else:
+        gallery_images = Gallery.objects.all().order_by('-uploaded_at')
+
+    return render(request, "public/gallery.html", {
+        "gallery_images": gallery_images,
+        "page_title": page_title,
+        "page_description": page_description
+    })
 
 
 def contact(request):

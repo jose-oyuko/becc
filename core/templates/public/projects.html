@@ -31,9 +31,11 @@
             class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
           <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-            <span class="bg-green-700 text-white px-4 py-1.5 rounded-full text-sm font-medium">{{ project.category }}</span>
+            <span class="bg-green-700 text-white px-4 py-1.5 rounded-full text-sm font-medium">{{ project.category
+              }}</span>
             <span
-              class="border border-white/80 text-white px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm">{{ project.status }}</span>
+              class="border border-white/80 text-white px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm">{{
+              project.status }}</span>
           </div>
         </div>
 
@@ -58,7 +60,7 @@
             <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Project Gallery</h4>
             <div class="grid grid-cols-4 gap-2">
               {% for img in project.gallery|slice:":4" %}
-              <a href="{{ img.image.url }}" target="_blank"
+              <a href="{% url 'gallery' %}?project={{ project.id }}"
                 class="block aspect-square rounded-lg overflow-hidden hover:opacity-80 transition-opacity">
                 <img src="{{ img.image.url }}" alt="{{ img.title }}" class="w-full h-full object-cover">
               </a>
